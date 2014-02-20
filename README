@@ -1,0 +1,15 @@
+This a First-person shooter project for SYCS421. 
+
+SOME PROJECT REQUIREMENTS:
+Projectile is a ray.
+Player and AI move around the plane.
+Continuous projectile firing. (Automatic weapons)
+No Sound
+Wall Obstacles
+No bullet ricochet
+Enemies attack when they spot enemy
+AI is tethered and patrols a central area.
+Axis bounding box.
+No respawn for enemies.
+
+WISH ME LUCK
