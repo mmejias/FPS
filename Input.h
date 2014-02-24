@@ -28,23 +28,37 @@ KeyboardHandler::~KeyboardHandler()
 void KeyboardHandler::keyDown(XEvent keyEvent)
 {
     //For a key down set the index in bool array to true
-    /*
-    switch(XLookupKeySym(&keyEvent.xkey, 0))
-    {
     
+    switch(XLookupKeysym(&keyEvent.xkey, 0))
+    {
+        case XK_Escape: 
+            keyStates[XK_Escape] = true;
+            break;
+        case XK_Left:
+        case XK_Right:
+        case XK_Up:
+        case XK_Down:
+            break;
     }
-    */
+   
 }
 
 void KeyboardHandler::keyUp(XEvent keyEvent)
 {
     //For a key up set the index in bool array to false
-    /*
-    switch(XLookupKeySym(&keyEvent.xkey, 0))
+    
+    switch(XLookupKeysym(&keyEvent.xkey, 0))
     {
-        
+        case XK_Escape:
+            keyStates[XK_Escape] = true;
+            break;    
+        case XK_Left:
+        case XK_Right:
+        case XK_Up:
+        case XK_Down:
+            break;
     }
-    */
+   
 }
 
 bool KeyboardHandler::isKeyDown(unsigned int key)
