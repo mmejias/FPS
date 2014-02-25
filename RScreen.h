@@ -89,7 +89,7 @@ void RScreen::Initialize()
 
     cmap = XCreateColormap(dpy, root, vi->visual, AllocNone);
     swa.colormap = cmap;
-    swa.event_mask = ExposureMask | KeyPressMask;
+    swa.event_mask = ExposureMask | KeyPressMask | PointerMotionMask;
 
     win = XCreateWindow(dpy, root, 0, 0, width, height, 0, vi->depth, InputOutput, vi->visual,
                         CWColormap | CWEventMask, &swa);

@@ -35,8 +35,14 @@ void KeyboardHandler::keyDown(XEvent keyEvent)
             keyStates[XK_Escape] = true;
             break;
         case XK_Left:
+            keyStates[XK_Left] = true;
+            break;
         case XK_Right:
+            keyStates[XK_Right] = true;
+            break;
         case XK_Up:
+            keyStates[XK_Up] = true;
+            break;
         case XK_Down:
             break;
     }
@@ -50,12 +56,19 @@ void KeyboardHandler::keyUp(XEvent keyEvent)
     switch(XLookupKeysym(&keyEvent.xkey, 0))
     {
         case XK_Escape:
-            keyStates[XK_Escape] = true;
+            keyStates[XK_Escape] = false;
             break;    
         case XK_Left:
+            keyStates[XK_Left] = false;
+            break;
         case XK_Right:
+            keyStates[XK_Right] = false;
+            break;
         case XK_Up:
+            keyStates[XK_Up] = false;
+            break;
         case XK_Down:
+            keyStates[XK_Down] = false;
             break;
     }
    
@@ -75,9 +88,12 @@ class MouseHandler
 {
     public:
         MouseHandler();
+        float getX();
+        float getY();
+        void onMove(XEvent);
     protected:
         bool leftPress, rightPress;
-        int xpos, ypos;
+        float xpos, ypos;
 };
 
 MouseHandler::MouseHandler()
@@ -86,3 +102,18 @@ MouseHandler::MouseHandler()
     leftPress = rightPress = false;
 }   
 
+float MouseHandler::getX()
+{
+    return xpos;
+}
+
+float MouseHandler::getY()
+{
+    return ypos;
+}
+
+void MouseHandler::onMove(XEvent event)
+{
+    xpos = event.xmotion.x;
+    ypos = event.xmotion.y;
+}

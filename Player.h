@@ -57,7 +57,7 @@ class Player
 
 Player::Player()
 {
-   view.setZ(-1.0);
+   view.setZ(1.0);
    right.setX(1.0);
    up.setY(1.0);
 
@@ -73,8 +73,36 @@ Player::~Player()
 void Player::render()
 {
     FPVector3 perspective = position+view;
-
+/*
     gluLookAt( position.getX(), position.getY(), position.getZ(),
-               perspective.getX(), perspective.getY(), perspective.getZ(),
+               view.getX(), view.getY(), view.getZ(),
                up.getX(), up.getY(), up.getZ() );
+*/
+
+    gluLookAt(0.0f, 0.0f, 0.0f, 
+              0.0f, 0.0f, 1.0f,
+              0.0f, 1.0f, 0.0f);
+
+}
+
+void Player::moveForward(float m_dist)
+{
+    float dist = 0.0;
+    dist = position.getZ();
+    dist = dist + m_dist;
+    position.setZ(dist);
+    
+    dist = view.getZ();
+    dist = dist + m_dist;
+    view.setZ(dist);
+}
+
+void Player::rotateX(float m_angle)
+{
+   //Depending on Mouse Motion rotate in X
+   //Rotation matrix
+   position.setX(cos(m_angle));
+   position.setY(sin(m_angle));
+   view.setX(-sin(m_angle));
+   view.setY(cos(m_angle));
 }

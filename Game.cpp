@@ -16,10 +16,15 @@ void draw();
 void initialize();
 void render();
 void update();
+void handleKeys();
+void handleMouse();
 
 RScreen rscreen;
 Level levelone;
 KeyboardHandler keyboard;
+MouseHandler mouse;
+Player player;
+
 int main(int argc, char** argv)
 {
     initialize();
@@ -45,15 +50,15 @@ void render()
                 usleep(500);
                 break;
             case KeyPress:
-                keyboard.keyDown(rscreen.getEvent());
-                if(keyboard.isKeyDown(XK_Escape))
-                {
-                    rscreen.Close();
-                    exit(0);
-                }
-                draw();
+                handleKeys();
+                printf("Key Pressed, Oh Lawdy!\n");
+                break;
+            case MotionNotify:
+                handleMouse();
                 break;
         }
+        draw();
+        usleep(500);
    }
 }
 
@@ -61,10 +66,34 @@ void draw()
 {
     rscreen.View();
 
+    player.render();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //DRAW OTHER OBJECST BETWEEN SCREEN VIEW AND BUFFER
     levelone.draw();
-
     rscreen.Buffer();
+}
+
+void handleKeys()
+{    
+    keyboard.keyDown(rscreen.getEvent());
+    if(keyboard.isKeyDown(XK_Up))
+    {
+        player.moveForward(0.0625);
+    }
+    if(keyboard.isKeyDown(XK_Escape))
+    {
+        rscreen.Close();
+        exit(0);
+    }
+}
+
+void handleMouse()
+{
+    float prevx, prevy;
+
+    prevx = mouse.getX();
+    prevy = mouse.getY();
+    mouse.onMove(rscreen.getEvent());
+    player.rotateX(mouse.getX() - prevx);
 }
