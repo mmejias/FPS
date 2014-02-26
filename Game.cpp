@@ -20,7 +20,7 @@ void handleKeys();
 void handleMouse();
 
 RScreen rscreen;
-Level levelone;
+Level levelone("LevelOne.obj");
 KeyboardHandler keyboard;
 MouseHandler mouse;
 Player player;
@@ -51,7 +51,6 @@ void render()
                 break;
             case KeyPress:
                 handleKeys();
-                printf("Key Pressed, Oh Lawdy!\n");
                 break;
             case MotionNotify:
                 handleMouse();
@@ -95,5 +94,5 @@ void handleMouse()
     prevx = mouse.getX();
     prevy = mouse.getY();
     mouse.onMove(rscreen.getEvent());
-    player.rotateX(mouse.getX() - prevx);
+    //player.rotateX(mouse.getX() - prevx);
 }

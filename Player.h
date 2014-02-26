@@ -2,6 +2,7 @@
 #include <GL/gl.h>
 #include <GL/glx.h>
 #include <GL/glu.h>
+#include "glm/glm.hpp"
 #include "FPVector.h"
 
 class Blaster
@@ -46,10 +47,10 @@ class Player
 
         void render();
     protected:
-        FPVector3 position;
-        FPVector3 view;
-        FPVector3 right;
-        FPVector3 up;
+        glm::vec3 position;
+        glm::vec3 view;
+        glm::vec3 right;
+        glm::vec3 up;
         float angle;
         float rotX, rotY, rotZ;
        // List blasters;
@@ -57,9 +58,9 @@ class Player
 
 Player::Player()
 {
-   view.setZ(1.0);
-   right.setX(1.0);
-   up.setY(1.0);
+   view = glm::vec3(0.0, 0.0, 1.0);
+   right = glm::vec3(1.0, 0.0, 0.0);
+   up = glm::vec3(0.0, 1.0, 0.0);
 
    angle = 0.0;
    rotX = rotY = rotZ = 0.0;
@@ -72,37 +73,43 @@ Player::~Player()
 
 void Player::render()
 {
-    FPVector3 perspective = position+view;
+    //FPVector3 perspective = position+view;
 /*
-    gluLookAt( position.getX(), position.getY(), position.getZ(),
-               view.getX(), view.getY(), view.getZ(),
-               up.getX(), up.getY(), up.getZ() );
+    gluLookAt( position.x, position.y, position.z,
+               view.x, view.y, view.z,
+               up.x, up.y, up.z );
 */
 
     gluLookAt(0.0f, 0.0f, 0.0f, 
-              0.0f, 0.0f, 1.0f,
-              0.0f, 1.0f, 0.0f);
+              0.0f, 1.0f, 0.0f,
+              0.0f, 0.0f, 1.0f);
 
 }
 
 void Player::moveForward(float m_dist)
 {
     float dist = 0.0;
-    dist = position.getZ();
+    position.z = position.z + m_dist;
+    view.z = view.z + m_dist;
+    /*
+     * dist = position.getZ();
     dist = dist + m_dist;
     position.setZ(dist);
     
     dist = view.getZ();
     dist = dist + m_dist;
     view.setZ(dist);
+    */
 }
 
 void Player::rotateX(float m_angle)
 {
    //Depending on Mouse Motion rotate in X
    //Rotation matrix
+   /*
    position.setX(cos(m_angle));
    position.setY(sin(m_angle));
    view.setX(-sin(m_angle));
    view.setY(cos(m_angle));
+    */
 }
