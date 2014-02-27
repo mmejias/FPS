@@ -2,8 +2,10 @@
 #include <GL/gl.h>
 #include <GL/glx.h>
 #include <GL/glu.h>
-#include "glm/glm.hpp"
-#include "FPVector.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+//#include "FPVector.h"
+#include "Camera.h"
 
 class Blaster
 {
@@ -45,25 +47,28 @@ class Player
         void rotateY(float);
         void rotateZ(float);
 
-        void render();
-    protected:
+        void render(float, float);
+    //protected:
         glm::vec3 position;
         glm::vec3 view;
-        glm::vec3 right;
         glm::vec3 up;
         float angle;
         float rotX, rotY, rotZ;
-       // List blasters;
+    protected:
+        FPCamera camera;
 };
 
 Player::Player()
 {
-   view = glm::vec3(0.0, 0.0, 1.0);
-   right = glm::vec3(1.0, 0.0, 0.0);
-   up = glm::vec3(0.0, 1.0, 0.0);
+   position = glm::vec3(0.0f, 0.0f, 0.0f);
+   view = glm::vec3(0.0f, 0.0f, 1.0f);
+   up = glm::vec3(0.0f, 1.0f, 0.0f);
 
-   angle = 0.0;
-   rotX = rotY = rotZ = 0.0;
+   angle = 0.0f;
+   rotX = rotY = rotZ = 0.0f;
+
+   camera.init(position, glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+   //camera.init(position, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 Player::~Player()
@@ -71,45 +76,62 @@ Player::~Player()
     printf("Delete Player\n");
 }
 
-void Player::render()
+void Player::render(float yaw, float pitch)
 {
-    //FPVector3 perspective = position+view;
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    
+    gluPerspective(60, 1.333, 2, 100); 
+    camera.update(yaw, pitch, position);
 /*
     gluLookAt( position.x, position.y, position.z,
                view.x, view.y, view.z,
                up.x, up.y, up.z );
 */
-
+/*
     gluLookAt(0.0f, 0.0f, 0.0f, 
               0.0f, 1.0f, 0.0f,
               0.0f, 0.0f, 1.0f);
-
+*/
 }
 
 void Player::moveForward(float m_dist)
 {
-    float dist = 0.0;
-    position.z = position.z + m_dist;
-    view.z = view.z + m_dist;
-    /*
-     * dist = position.getZ();
-    dist = dist + m_dist;
-    position.setZ(dist);
+    glm::mat4 trans = glm::translate(glm::mat4(1.0f), position);
+    glm::vec4 move = glm::vec4(0.0f, 0.0f, m_dist, 1.0f);
+    glm::vec4 transformed = trans * move;
+    position = glm::vec3(transformed);
+}
+
+void Player::moveRight(float m_dist)
+{
     
-    dist = view.getZ();
-    dist = dist + m_dist;
-    view.setZ(dist);
-    */
+    glm::mat4 trans = glm::translate(glm::mat4(1.0f), position);
+    glm::vec4 move = glm::vec4(m_dist, 0.0f, 0.0f, 1.0f);
+    glm::vec4 transformed = trans * move;
+    position = glm::vec3(transformed);
+}
+
+void Player::moveLeft(float m_dist)
+{
+    
+    glm::mat4 trans = glm::translate(glm::mat4(1.0f), position);
+    glm::vec4 move = glm::vec4(-m_dist, 0.0f, 0.0f, 1.0f);
+    glm::vec4 transformed = trans * move;
+    position = glm::vec3(transformed);
+}
+
+void Player::moveBackward(float m_dist)
+{
+    
+    glm::mat4 trans = glm::translate(glm::mat4(1.0f), position);
+    glm::vec4 move = glm::vec4(0.0f, 0.0f, -m_dist, 1.0f);
+    glm::vec4 transformed = trans * move;
+    position = glm::vec3(transformed);
 }
 
 void Player::rotateX(float m_angle)
 {
    //Depending on Mouse Motion rotate in X
-   //Rotation matrix
-   /*
-   position.setX(cos(m_angle));
-   position.setY(sin(m_angle));
-   view.setX(-sin(m_angle));
-   view.setY(cos(m_angle));
-    */
+   
 }

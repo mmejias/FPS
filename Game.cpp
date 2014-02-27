@@ -24,6 +24,7 @@ Level levelone("LevelOne.obj");
 KeyboardHandler keyboard;
 MouseHandler mouse;
 Player player;
+Sphere spheres[5];
 
 int main(int argc, char** argv)
 {
@@ -35,7 +36,21 @@ int main(int argc, char** argv)
 
 void initialize()
 {
+    float light_position[] = {0.0, 10.0, 1.0, 0.0};
     rscreen.Initialize();
+    glViewport(0, 0, rscreen.getWidth(), rscreen.getHeight());
+    
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_position);
+
+    spheres[0].x = -10.0f;  spheres[0].z = -10.0f; 
+    spheres[1].x = 10.0f;   spheres[1].z = 10.0f;
+    spheres[2].x = 0.0f;    spheres[2].z = 0.0f;
+    spheres[3].x = -10.0f; spheres[3].z = 10.0f;
+    spheres[4].x = 10.0f; spheres[4].z = -10.0f;
+    for(unsigned int i = 0; i < 5; ++i)
+        spheres[i].y = 10.0f;
 }
 
 void render()
@@ -65,11 +80,14 @@ void draw()
 {
     rscreen.View();
 
-    player.render();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //DRAW OTHER OBJECST BETWEEN SCREEN VIEW AND BUFFER
     levelone.draw();
+    for(unsigned int i = 0; i < 5; ++i)
+        spheres[i].draw();
+    player.render(mouse.getdelX(), mouse.getdelY());
+
     rscreen.Buffer();
 }
 
@@ -89,10 +107,5 @@ void handleKeys()
 
 void handleMouse()
 {
-    float prevx, prevy;
-
-    prevx = mouse.getX();
-    prevy = mouse.getY();
-    mouse.onMove(rscreen.getEvent());
-    //player.rotateX(mouse.getX() - prevx);
+    mouse.onMove(rscreen.getEvent());    
 }

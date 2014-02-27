@@ -90,17 +90,31 @@ class MouseHandler
         MouseHandler();
         float getX();
         float getY();
+        float getdelX();
+        float getdelY();
         void onMove(XEvent);
     protected:
         bool leftPress, rightPress;
         float xpos, ypos;
+        float prevx, prevy;
 };
 
 MouseHandler::MouseHandler()
 {
-    xpos = ypos = 0; 
+    xpos = ypos = 0.0; 
+    prevx = prevy = 0.0;
     leftPress = rightPress = false;
 }   
+
+float MouseHandler::getdelX()
+{
+    return xpos - prevx;
+}
+
+float MouseHandler::getdelY()
+{
+    return ypos - prevx;
+}
 
 float MouseHandler::getX()
 {
@@ -114,6 +128,8 @@ float MouseHandler::getY()
 
 void MouseHandler::onMove(XEvent event)
 {
+    prevx = xpos;
+    prevy = ypos;
     xpos = event.xmotion.x;
     ypos = event.xmotion.y;
 }

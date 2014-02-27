@@ -15,6 +15,8 @@ class RScreen
     public:
        RScreen();
        RScreen(int, int);
+       int getWidth();
+       int getHeight();
        XEvent getEvent();
        void View();
        void Initialize();
@@ -52,6 +54,15 @@ RScreen::RScreen (int m_width, int m_height)
 {
     width = m_width;
     height = m_height;
+}
+int RScreen::getWidth()
+{
+    return width;
+}
+
+int RScreen::getHeight()
+{
+    return height;
 }
 
 XEvent RScreen::getEvent()
