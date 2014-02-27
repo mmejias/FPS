@@ -1,36 +1,16 @@
+//Followed: www.g-truc.net/project-0016.html
+
 #include <stdio.h>
 #include <GL/gl.h>
 #include <GL/glx.h>
 #include <GL/glu.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <queue>
 //#include "FPVector.h"
+#include "Blaster.h"
 #include "Camera.h"
 
-class Blaster
-{
-    //Draw some blaster-esque firing device
-    public:
-        void draw();
-        void update();
-};
-
-struct Node
-{
-    Node* next;
-    Blaster info;
-};
-
-class List
-{
-    //You should have a container to fire your blaster
-    public:
-        List();
-        void insert(Blaster);
-        void deleteItem(Blaster);
-    private:
-        Node root;
-};
 
 class Player
 {
@@ -56,6 +36,7 @@ class Player
         float rotX, rotY, rotZ;
     protected:
         FPCamera camera;
+        std::queue<Blaster> weapon;
 };
 
 Player::Player()
@@ -83,6 +64,13 @@ void Player::render(float yaw, float pitch)
     
     gluPerspective(60, 1.333, 2, 100); 
     camera.update(yaw, pitch, position);
+
+    if(!weapon.empty())
+    {
+        weapon.front().update(0.03125f);
+        if(!weapon.front().visible)
+            weapon.pop();
+    }
 /*
     gluLookAt( position.x, position.y, position.z,
                view.x, view.y, view.z,
@@ -133,5 +121,16 @@ void Player::moveBackward(float m_dist)
 void Player::rotateX(float m_angle)
 {
    //Depending on Mouse Motion rotate in X
-   
+  glm::mat4 rot = glm::rotate(glm::mat4(1.0f), m_angle, position);
+  glm::vec4 move = glm::vec4(m_angle, 0.0f, 0.0f, 1.0f);
+  glm::vec4 transformed = rot*move;
+  position = glm::vec3(transformed); 
+}
+
+void Player::fire()
+{
+    Blaster shot;
+    shot.position = position;
+    
+    weapon.push(shot);    
 }

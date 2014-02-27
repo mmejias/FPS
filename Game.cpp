@@ -1,3 +1,11 @@
+/**
+ *
+ *Rotation on an axis to get look around effect. Does not work
+  Blaster does not work two fixes and you are all set
+ *
+ */
+
+
 #include "Level.h"
 #include "Input.h"
 #include "Player.h"
@@ -16,6 +24,7 @@ void draw();
 void initialize();
 void render();
 void update();
+void release();
 void handleKeys();
 void handleMouse();
 
@@ -67,6 +76,9 @@ void render()
             case KeyPress:
                 handleKeys();
                 break;
+            case KeyRelease:
+                release();
+                break;
             case MotionNotify:
                 handleMouse();
                 break;
@@ -98,14 +110,37 @@ void handleKeys()
     {
         player.moveForward(0.0625);
     }
+    if(keyboard.isKeyDown(XK_Left))
+    {
+        player.moveLeft(0.0625);
+    }
+    if(keyboard.isKeyDown(XK_Right))
+    {
+        player.moveRight(0.0625);
+    }
+    if(keyboard.isKeyDown(XK_Down))
+    {
+        player.moveBackward(0.0625);
+    }
+    if(keyboard.isKeyDown(XK_space))
+    {
+        player.fire();
+    }
     if(keyboard.isKeyDown(XK_Escape))
     {
         rscreen.Close();
         exit(0);
     }
+    release();
+}
+
+void release()
+{
+    keyboard.keyUp(rscreen.getEvent());
 }
 
 void handleMouse()
 {
     mouse.onMove(rscreen.getEvent());    
+    //player.rotateX(mouse.getdelX());
 }

@@ -44,6 +44,10 @@ void KeyboardHandler::keyDown(XEvent keyEvent)
             keyStates[XK_Up] = true;
             break;
         case XK_Down:
+            keyStates[XK_Down] = true;
+            break;
+        case XK_space:
+            keyStates[XK_space] = true;
             break;
     }
    
@@ -69,6 +73,9 @@ void KeyboardHandler::keyUp(XEvent keyEvent)
             break;
         case XK_Down:
             keyStates[XK_Down] = false;
+            break;
+        case XK_space:
+            keyStates[XK_space] = false;
             break;
     }
    
