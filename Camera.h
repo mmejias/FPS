@@ -5,18 +5,30 @@
 #include <GL/glu.h>
 #include <cmath>
 
+#define X_AXIS glm::vec3(1.0f, 0.0f, 0.0f)
+#define Y_AXIS glm::vec3(0.0f, 1.0f, 0.0f)
+#define Z_AXIS glm::vec3(0.0f, 0.0f, 1.0f)
+#define PI 3.14159265f 
+
 //First Person Camera
 class FPCamera
 {
     public:
         FPCamera();
         void init(glm::vec3 playerPosition, glm::vec3 m_verticalOffset, glm::vec3 m_targetOffset);
+        glm::vec3 getLeft();
+        glm::vec3 getTarget();
+        glm::vec3 getUp();
+        void look();
+        void setTarget(glm::vec3 projectedTarget);
         void update(float yaw, float pitch, glm::vec3);
     protected:
         glm::vec3 eye;
+        glm::vec3 left;
         glm::vec3 target;
         glm::vec3 verticalOffset;
         glm::vec3 targetOffset;
+        glm::vec3 up;
         glm::mat4 cameraMatrix;
         float totalYaw, totalPitch;
 };
@@ -36,7 +48,7 @@ void FPCamera::init(glm::vec3 m_position, glm::vec3 m_verticalOffset, glm::vec3 
 
     eye = m_position + verticalOffset;
     target = eye + targetOffset;
-    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+    up = glm::vec3(0.0f, 1.0f, 0.0f);
     
     gluLookAt(eye.x, eye.y, eye.z, 
               target.x, target.y, target.z, 
@@ -44,50 +56,94 @@ void FPCamera::init(glm::vec3 m_position, glm::vec3 m_verticalOffset, glm::vec3 
 }
 float clamp(float, float, float);
 
+glm::vec3 FPCamera::getLeft()
+{
+    return left;
+}
+
+glm::vec3 FPCamera::getTarget()
+{
+    return target;
+}
+
+glm::vec3 FPCamera::getUp()
+{
+    return up;
+}
+
+void FPCamera::setTarget(glm::vec3 projectedTarget)
+{
+   /* 
+    glm::vec3 m_target;
+    
+    projectedTarget = projectedTarget - eye;
+    m_target = projectedTarget;
+    
+    projectedTarget.y = 0.0f;
+    projectedTarget = glm::normalize(projectedTarget);
+    
+    glm::vec3 right = -glm::cross(projectedTarget, up);
+    
+    target = projectedTarget;
+    up = glm::cross(target, right);
+    
+    target = glm::normalize(target);
+    right = glm::normalize(right);
+    up = glm::normalize(up);   
+    */
+   target = projectedTarget;
+/*   
+   gluLookAt(eye.x, eye.y, eye.z, 
+              target.x, target.y, target.z, 
+              0, 1, 0);
+*/
+}
+
 void FPCamera::update(float yaw, float pitch, glm::vec3 position)
 {
     
     totalYaw += yaw;
     totalPitch += pitch;
 
-    //totalPitch = clamp(totalPitch, 0.78f, -0.78f);
+    totalPitch = clamp(totalPitch, 90.0f, -90.0f);
     
     glm::vec3 actualOffset = targetOffset;
-    glm::quat quatYaw = glm::angleAxis(glm::radians(totalYaw), actualOffset); 
+    glm::quat quatYaw = glm::angleAxis((totalYaw), actualOffset); 
     
+    actualOffset = quatYaw * actualOffset;
     //actualOffset = Transform(actualOffset, quatYaw) is missing
     glm::vec3 forward = actualOffset;    
     forward = glm::normalize(forward);
 
-    glm::vec3 left = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), forward);
+    left = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), forward);
     left = glm::normalize(left);
-
-    glm::quat quatPitch = glm::angleAxis(glm::radians(totalPitch), actualOffset);
     
-   
+    glm::quat quatPitch = glm::angleAxis((totalPitch), actualOffset);
+    
+    actualOffset = quatPitch * actualOffset;
 
     eye = position + verticalOffset;
+    actualOffset = quatYaw * quatPitch * actualOffset;
+
     target = eye + actualOffset;
     
-    //New Code
-    //eye = glm::cross(quatPitch, eye);
-    //eye = quatPitch * eye;
-    //target = quatYaw * target;
-    //target = quatYaw * quatPitch * target;
+    
+}
 
+void FPCamera::look()
+{
     gluLookAt(eye.x, eye.y, eye.z, 
               target.x, target.y, target.z, 
               0, 1, 0);
-    
 }
 
 float clamp(float totalPitch, float m_angle, float m_angle2)
 {
     //while(toalPitch > m_angle && totalPitch < m_angle2)
     if(totalPitch > m_angle)
-        return sin(totalPitch*m_angle);
+        return totalPitch - m_angle;
     if(totalPitch < m_angle2)
-        return -sin(totalPitch*m_angle2);
+        return totalPitch - m_angle2;
 
         return totalPitch;
 }

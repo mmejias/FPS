@@ -27,11 +27,12 @@ void update();
 void release();
 void handleKeys();
 void handleMouse();
+void lighting();
 
 RScreen rscreen;
 Level levelone("LevelOne.obj");
 KeyboardHandler keyboard;
-MouseHandler mouse;
+MouseHandler mouse(rscreen.getWidth(), rscreen.getHeight());
 Player player;
 Sphere spheres[5];
 
@@ -45,13 +46,10 @@ int main(int argc, char** argv)
 
 void initialize()
 {
-    float light_position[] = {0.0, 10.0, 1.0, 0.0};
     rscreen.Initialize();
     glViewport(0, 0, rscreen.getWidth(), rscreen.getHeight());
     
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, light_position);
+    lighting();
      
     spheres[0].x = -10.0f;  spheres[0].z = -10.0f; 
     spheres[1].x = 10.0f;   spheres[1].z = 10.0f;
@@ -66,7 +64,7 @@ void render()
 {
    while(1)
    {
-        while(XPending(rscreen.getDisplay()))
+        if(XPending(rscreen.getDisplay()))
         {
             rscreen.Draw();
             switch(rscreen.getEvent().type)
@@ -102,8 +100,9 @@ void draw()
     for(unsigned int i = 0; i < 5; ++i)
         spheres[i].draw();
 
-    //printf("%.2f %.2f\n", mouse.getdelX(), mouse.getdelY());
-    player.render(mouse.getdelX(), mouse.getdelY());
+    float deltaX = mouse.getdelX();
+    float deltaY = mouse.getdelY();
+    player.render(deltaX, deltaY);
 
     rscreen.Buffer();
 }
@@ -147,5 +146,21 @@ void release()
 void handleMouse()
 {
     mouse.onMove(rscreen.getEvent());    
-    player.rotateX(mouse.getX()-rscreen.getWidth()/2);
+//    player.rotateX();
+//    player.rotateY();
+//    player.rotateZ();
+}
+
+void lighting()
+{
+    float light_position[] = {0.0, 20.0, 1.0, 1.0};
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    //glLightfv(GL_LIGHT0, GL_SPECULAR, light_position);
+    
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, YELLOW);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, BLACK);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, WHITE);
 }

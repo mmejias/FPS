@@ -2,6 +2,7 @@
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 
+
 class KeyboardHandler
 {
     public:
@@ -95,6 +96,7 @@ class MouseHandler
 {
     public:
         MouseHandler();
+        MouseHandler(int, int);
         float getX();
         float getY();
         float getdelX();
@@ -104,23 +106,32 @@ class MouseHandler
         bool leftPress, rightPress;
         float xpos, ypos;
         float prevx, prevy;
+        float deltaX, deltaY;
 };
 
 MouseHandler::MouseHandler()
 {
-    xpos = ypos = 0.0; 
-    prevx = prevy = 0.0;
+    xpos = ypos = 0.0f; 
+    prevx = prevy = 0.0f;
     leftPress = rightPress = false;
+    deltaX = deltaY = 0.0f;
 }   
+
+MouseHandler::MouseHandler(int width, int height)
+{
+    xpos = float(width/2);
+    ypos = float(height/2);
+    deltaX = deltaY = 0.0f;
+}
 
 float MouseHandler::getdelX()
 {
-    return xpos - prevx;
+    return deltaX;
 }
 
 float MouseHandler::getdelY()
 {
-    return ypos - prevx;
+    return deltaY;
 }
 
 float MouseHandler::getX()
@@ -139,4 +150,6 @@ void MouseHandler::onMove(XEvent event)
     prevy = ypos;
     xpos = event.xmotion.x;
     ypos = event.xmotion.y;
+    deltaX = xpos - prevx;
+    deltaY = ypos - prevy;
 }
