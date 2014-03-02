@@ -61,12 +61,12 @@ void Player::render(float yaw, float pitch)
     glLoadIdentity();
     
     gluPerspective(60, 1.333, 2, 100); 
-    rotX = yaw;
+    rotZ = rotX = yaw;
     rotY = pitch;
     camera.update(yaw, pitch, position);
-    rotateX();
-    rotateY();
-    //    rotateZ();
+//    rotateX();
+//    rotateY();
+//    rotateZ();
     camera.look();
 
     if(!weapon.empty())
@@ -131,7 +131,7 @@ void Player::rotateY()
 {
     rotY /= 180*PI;
     glm::mat4 rot = glm::rotate(glm::mat4(1.0f), rotY, camera.getTarget());
-    glm::vec4 move = glm::vec4(rotY, 0.0f, 0.0f, 1.0f);
+    glm::vec4 move = glm::vec4(0.0f, rotY, 0.0f, 1.0f);
     glm::vec4 trans = rot*move;
     glm::vec3 m_target = glm::vec3(trans);
     //glm::quat quatYaw = glm::angleAxis(rotY, glm::vec3(0.0f, 0.0f, 1.0f));
@@ -141,9 +141,11 @@ void Player::rotateY()
 
 void Player::rotateZ()
 {
-    glm::vec3 m_target = glm::cross(position, camera.getTarget());
-    //glm::mat4 rot = glm::
-    m_target = glm::normalize(m_target);
+    rotZ /= 180*PI;
+    glm::mat4 rot = glm::rotate(glm::mat4(1.0f), rotZ, camera.getTarget());
+    glm::vec4 move = glm::vec4(0.0f, 0.0f, rotZ, 1.0f);
+    glm::vec4 trans = rot * move;
+    glm::vec3 m_target = glm::vec3(trans);
     camera.setTarget(m_target);
 }
 

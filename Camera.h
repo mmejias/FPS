@@ -92,11 +92,6 @@ void FPCamera::setTarget(glm::vec3 projectedTarget)
     up = glm::normalize(up);   
     */
    target = projectedTarget;
-/*   
-   gluLookAt(eye.x, eye.y, eye.z, 
-              target.x, target.y, target.z, 
-              0, 1, 0);
-*/
 }
 
 void FPCamera::update(float yaw, float pitch, glm::vec3 position)
@@ -108,7 +103,8 @@ void FPCamera::update(float yaw, float pitch, glm::vec3 position)
     totalPitch = clamp(totalPitch, 90.0f, -90.0f);
     
     glm::vec3 actualOffset = targetOffset;
-    glm::quat quatYaw = glm::angleAxis((totalYaw), actualOffset); 
+    //glm::quat quatYaw = glm::angleAxis((totalYaw), actualOffset); 
+    glm::quat quatYaw = glm::angleAxis((totalYaw), Z_AXIS); 
     
     actualOffset = quatYaw * actualOffset;
     //actualOffset = Transform(actualOffset, quatYaw) is missing
@@ -118,7 +114,8 @@ void FPCamera::update(float yaw, float pitch, glm::vec3 position)
     left = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), forward);
     left = glm::normalize(left);
     
-    glm::quat quatPitch = glm::angleAxis((totalPitch), actualOffset);
+    //glm::quat quatPitch = glm::angleAxis((totalPitch), actualOffset);
+    glm::quat quatPitch = glm::angleAxis((totalPitch), Y_AXIS);
     
     actualOffset = quatPitch * actualOffset;
 
