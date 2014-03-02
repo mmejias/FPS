@@ -71,16 +71,8 @@ void Player::render(float yaw, float pitch)
         if(!weapon.front().visible)
             weapon.pop();
     }
-/*
-    gluLookAt( position.x, position.y, position.z,
-               view.x, view.y, view.z,
-               up.x, up.y, up.z );
-*/
-/*
-    gluLookAt(0.0f, 0.0f, 0.0f, 
-              0.0f, 1.0f, 0.0f,
-              0.0f, 0.0f, 1.0f);
-*/
+
+
 }
 
 void Player::moveForward(float m_dist)
@@ -121,10 +113,10 @@ void Player::moveBackward(float m_dist)
 void Player::rotateX(float m_angle)
 {
    //Depending on Mouse Motion rotate in X
-  glm::mat4 rot = glm::rotate(glm::mat4(1.0f), m_angle, position);
-  glm::vec4 move = glm::vec4(m_angle, 0.0f, 0.0f, 1.0f);
-  glm::vec4 transformed = rot*move;
-  position = glm::vec3(transformed); 
+     glm::mat4 rot = glm::rotate(glm::mat4(1.0f), m_angle, position);
+     glm::vec4 move = glm::vec4(m_angle, 0.0f, 0.0f, 1.0f);
+     glm::vec4 transformed = rot*move;
+     position = glm::vec3(transformed); 
 }
 
 void Player::fire()
@@ -133,4 +125,5 @@ void Player::fire()
     shot.position = position;
     
     weapon.push(shot);    
+    printf("Weapon fired\n");
 }

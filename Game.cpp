@@ -51,40 +51,43 @@ void initialize()
     
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_position);
-
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light_position);
+     
     spheres[0].x = -10.0f;  spheres[0].z = -10.0f; 
     spheres[1].x = 10.0f;   spheres[1].z = 10.0f;
     spheres[2].x = 0.0f;    spheres[2].z = 0.0f;
     spheres[3].x = -10.0f; spheres[3].z = 10.0f;
     spheres[4].x = 10.0f; spheres[4].z = -10.0f;
     for(unsigned int i = 0; i < 5; ++i)
-        spheres[i].y = 10.0f;
+        spheres[i].y = 0.5f;
 }
 
 void render()
 {
    while(1)
    {
-        rscreen.Draw();
-        switch(rscreen.getEvent().type)
+        while(XPending(rscreen.getDisplay()))
         {
-            case Expose:
-                draw();
-                usleep(500);
-                break;
-            case KeyPress:
-                handleKeys();
-                break;
-            case KeyRelease:
-                release();
-                break;
-            case MotionNotify:
-                handleMouse();
-                break;
+            rscreen.Draw();
+            switch(rscreen.getEvent().type)
+            {
+                case Expose:
+                    draw();
+                    usleep(500);
+                    break;
+                case KeyPress:
+                    handleKeys();
+                    break;
+                case KeyRelease:
+                     release();
+                     break;
+                case MotionNotify:
+                    handleMouse();
+                    break;
+            }
+            draw();
+            usleep(500);
         }
-        draw();
-        usleep(500);
    }
 }
 
@@ -98,6 +101,8 @@ void draw()
     levelone.draw();
     for(unsigned int i = 0; i < 5; ++i)
         spheres[i].draw();
+
+    //printf("%.2f %.2f\n", mouse.getdelX(), mouse.getdelY());
     player.render(mouse.getdelX(), mouse.getdelY());
 
     rscreen.Buffer();
@@ -142,5 +147,5 @@ void release()
 void handleMouse()
 {
     mouse.onMove(rscreen.getEvent());    
-    //player.rotateX(mouse.getdelX());
+    player.rotateX(mouse.getX()-rscreen.getWidth()/2);
 }

@@ -7,7 +7,6 @@
 #include <string>
 #include <string.h>
 #include <vector>
-#include "Geometry.h"
 
 class Level
 {
@@ -73,8 +72,8 @@ void Level::draw()
   
     //glClear( GL_COLOR_BUFFER_BIT );
     //glEnable(GL_DEPTH_TEST);
-//    glDisable(GL_LIGHTING);
-//    glDisable(GL_TEXTURE_2D);
+    //glDisable(GL_LIGHTING);
+    //glDisable(GL_TEXTURE_2D);
     glBegin(GL_QUADS);
         glColor3f(0.0f, 0.0, 1.0f);
         glVertex3f(-12.363720, 0, 11.919053);

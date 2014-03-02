@@ -15,6 +15,7 @@ class RScreen
     public:
        RScreen();
        RScreen(int, int);
+       Display* getDisplay();
        int getWidth();
        int getHeight();
        XEvent getEvent();
@@ -55,6 +56,12 @@ RScreen::RScreen (int m_width, int m_height)
     width = m_width;
     height = m_height;
 }
+
+Display* RScreen::getDisplay()
+{
+    return dpy;
+}
+
 int RScreen::getWidth()
 {
     return width;

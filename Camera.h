@@ -1,9 +1,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
-//#include "Quaternion.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <cmath>
 
 //First Person Camera
 class FPCamera
@@ -50,8 +50,8 @@ void FPCamera::update(float yaw, float pitch, glm::vec3 position)
     totalYaw += yaw;
     totalPitch += pitch;
 
-    totalPitch = clamp(totalPitch, 0.78f, -0.78f);
-
+    //totalPitch = clamp(totalPitch, 0.78f, -0.78f);
+    
     glm::vec3 actualOffset = targetOffset;
     glm::quat quatYaw = glm::angleAxis(glm::radians(totalYaw), actualOffset); 
     
@@ -63,23 +63,31 @@ void FPCamera::update(float yaw, float pitch, glm::vec3 position)
     left = glm::normalize(left);
 
     glm::quat quatPitch = glm::angleAxis(glm::radians(totalPitch), actualOffset);
+    
+   
 
     eye = position + verticalOffset;
     target = eye + actualOffset;
     
+    //New Code
+    //eye = glm::cross(quatPitch, eye);
+    //eye = quatPitch * eye;
+    //target = quatYaw * target;
+    //target = quatYaw * quatPitch * target;
+
     gluLookAt(eye.x, eye.y, eye.z, 
               target.x, target.y, target.z, 
               0, 1, 0);
     
-    //printf("Update Camera\n");
 }
 
 float clamp(float totalPitch, float m_angle, float m_angle2)
 {
+    //while(toalPitch > m_angle && totalPitch < m_angle2)
     if(totalPitch > m_angle)
-        return m_angle-totalPitch;
+        return sin(totalPitch*m_angle);
     if(totalPitch < m_angle2)
-        return m_angle2 -  totalPitch;
+        return -sin(totalPitch*m_angle2);
 
         return totalPitch;
 }
