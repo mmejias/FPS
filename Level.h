@@ -76,10 +76,10 @@ void Level::draw()
     //glDisable(GL_TEXTURE_2D);
     glBegin(GL_QUADS);
         glColor3f(0.0f, 0.0, 1.0f);
-        glVertex3f(-12.363720, 0, 11.919053);
-        glVertex3f(21.372470, 0, 11.919053);
-        glVertex3f(-12.363720, 0, -38.155647);
-        glVertex3f(21.372470, 0, -38.155647);
+        glVertex3f(-100.0f, 0, 100.0f);
+        glVertex3f(100.0f, 0, 100.0f);
+        glVertex3f(-100.0f, 0, -100.0f);
+        glVertex3f(100.0f, 0, -100.0f);
     glEnd();
     glEnable(GL_LIGHTING);
     glEnable(GL_TEXTURE_2D);

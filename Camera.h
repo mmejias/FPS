@@ -16,6 +16,7 @@ class FPCamera
     public:
         FPCamera();
         void init(glm::vec3 playerPosition, glm::vec3 m_verticalOffset, glm::vec3 m_targetOffset);
+        glm::vec3 getEye();
         glm::vec3 getLeft();
         glm::vec3 getTarget();
         glm::vec3 getUp();
@@ -54,7 +55,13 @@ void FPCamera::init(glm::vec3 m_position, glm::vec3 m_verticalOffset, glm::vec3 
               target.x, target.y, target.z, 
               up.x, up.y, up.z);
 }
+
 float clamp(float, float, float);
+
+glm::vec3 FPCamera::getEye()
+{
+    return eye;
+}
 
 glm::vec3 FPCamera::getLeft()
 {
@@ -73,24 +80,6 @@ glm::vec3 FPCamera::getUp()
 
 void FPCamera::setTarget(glm::vec3 projectedTarget)
 {
-   /* 
-    glm::vec3 m_target;
-    
-    projectedTarget = projectedTarget - eye;
-    m_target = projectedTarget;
-    
-    projectedTarget.y = 0.0f;
-    projectedTarget = glm::normalize(projectedTarget);
-    
-    glm::vec3 right = -glm::cross(projectedTarget, up);
-    
-    target = projectedTarget;
-    up = glm::cross(target, right);
-    
-    target = glm::normalize(target);
-    right = glm::normalize(right);
-    up = glm::normalize(up);   
-    */
    target = projectedTarget;
 }
 
@@ -99,12 +88,12 @@ void FPCamera::update(float yaw, float pitch, glm::vec3 position)
     
     totalYaw += yaw;
     totalPitch += pitch;
-
-    totalPitch = clamp(totalPitch, 90.0f, -90.0f);
+    
+//    totalPitch = clamp(totalPitch, 90.0f, -90.0f);
     
     glm::vec3 actualOffset = targetOffset;
     //glm::quat quatYaw = glm::angleAxis((totalYaw), actualOffset); 
-    glm::quat quatYaw = glm::angleAxis((totalYaw), Z_AXIS); 
+    glm::quat quatYaw = glm::angleAxis((totalYaw), Y_AXIS); 
     
     actualOffset = quatYaw * actualOffset;
     //actualOffset = Transform(actualOffset, quatYaw) is missing
@@ -115,12 +104,12 @@ void FPCamera::update(float yaw, float pitch, glm::vec3 position)
     left = glm::normalize(left);
     
     //glm::quat quatPitch = glm::angleAxis((totalPitch), actualOffset);
-    glm::quat quatPitch = glm::angleAxis((totalPitch), Y_AXIS);
+    glm::quat quatPitch = glm::angleAxis((totalPitch), X_AXIS);
     
     actualOffset = quatPitch * actualOffset;
 
     eye = position + verticalOffset;
-    actualOffset = quatYaw * quatPitch * actualOffset;
+   // actualOffset = quatYaw * quatPitch * actualOffset;
 
     target = eye + actualOffset;
     

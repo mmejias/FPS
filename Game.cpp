@@ -94,7 +94,7 @@ void draw()
     rscreen.View();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+    glClearColor(0.88f, 0.93f, 0.93f, 1.0f);
     //DRAW OTHER OBJECST BETWEEN SCREEN VIEW AND BUFFER
     levelone.draw();
     for(unsigned int i = 0; i < 5; ++i)
@@ -145,10 +145,7 @@ void release()
 
 void handleMouse()
 {
-    mouse.onMove(rscreen.getEvent());    
-//    player.rotateX();
-//    player.rotateY();
-//    player.rotateZ();
+    mouse.onMove(rscreen.getEvent(), rscreen.getWidth(), rscreen.getHeight());    
 }
 
 void lighting()

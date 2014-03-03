@@ -35,7 +35,7 @@ class Player
         float rotX, rotY, rotZ;
     protected:
         FPCamera camera;
-        std::queue<Blaster> weapon;
+        Blaster weapon;
 };
 
 Player::Player()
@@ -63,20 +63,13 @@ void Player::render(float yaw, float pitch)
     gluPerspective(60, 1.333, 2, 100); 
     rotZ = rotX = yaw;
     rotY = pitch;
+    
+    weapon.update();
+    weapon.draw();
+    
     camera.update(yaw, pitch, position);
-//    rotateX();
-//    rotateY();
-//    rotateZ();
     camera.look();
-
-    if(!weapon.empty())
-    {
-        weapon.front().update(0.03125f);
-        if(!weapon.front().visible)
-            weapon.pop();
-    }
-
-
+    
 }
 
 void Player::moveForward(float m_dist)
@@ -89,7 +82,6 @@ void Player::moveForward(float m_dist)
 
 void Player::moveRight(float m_dist)
 {
-    
     glm::mat4 trans = glm::translate(glm::mat4(1.0f), position);
     glm::vec4 move = glm::vec4(-m_dist, 0.0f, 0.0f, 1.0f);
     glm::vec4 transformed = trans * move;
@@ -121,8 +113,6 @@ void Player::rotateX()
     glm::vec4 move = glm::vec4(rotX, 0.0f, 0.0f, 1.0f);
     glm::vec4 trans = rot*move;
     glm::vec3 m_target = glm::vec3(trans);
-    //glm::quat quatYaw = glm::angleAxis(rotX, glm::vec3(0.0f, 1.0f, 0.0f));
-    //m_target = quatYaw * m_target;
     camera.setTarget(m_target);
     
 }
@@ -134,8 +124,6 @@ void Player::rotateY()
     glm::vec4 move = glm::vec4(0.0f, rotY, 0.0f, 1.0f);
     glm::vec4 trans = rot*move;
     glm::vec3 m_target = glm::vec3(trans);
-    //glm::quat quatYaw = glm::angleAxis(rotY, glm::vec3(0.0f, 0.0f, 1.0f));
-    //m_target = quatYaw * m_target;
     camera.setTarget(m_target);
 }
 
@@ -151,9 +139,8 @@ void Player::rotateZ()
 
 void Player::fire()
 {
-    Blaster shot;
-    shot.position = position;
+    Bullet bullet(position, camera.getTarget());
+    weapon.projectiles.push_back(bullet);
     
-    weapon.push(shot);    
     printf("Weapon fired\n");
 }

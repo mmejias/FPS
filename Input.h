@@ -101,7 +101,7 @@ class MouseHandler
         float getY();
         float getdelX();
         float getdelY();
-        void onMove(XEvent);
+        void onMove(XEvent, int, int);
     protected:
         bool leftPress, rightPress;
         float xpos, ypos;
@@ -144,7 +144,7 @@ float MouseHandler::getY()
     return ypos;
 }
 
-void MouseHandler::onMove(XEvent event)
+void MouseHandler::onMove(XEvent event, int width, int height)
 {
     prevx = xpos;
     prevy = ypos;
