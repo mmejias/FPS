@@ -17,6 +17,7 @@ class FPCamera
         FPCamera();
         void init(glm::vec3 playerPosition, glm::vec3 m_verticalOffset, glm::vec3 m_targetOffset);
         glm::vec3 getEye();
+        glm::vec3 getForward();
         glm::vec3 getLeft();
         glm::vec3 getTarget();
         glm::vec3 getUp();
@@ -26,6 +27,7 @@ class FPCamera
     protected:
         glm::vec3 eye;
         glm::vec3 left;
+        glm::vec3 forward;    
         glm::vec3 target;
         glm::vec3 verticalOffset;
         glm::vec3 targetOffset;
@@ -63,6 +65,11 @@ glm::vec3 FPCamera::getEye()
     return eye;
 }
 
+glm::vec3 FPCamera::getForward()
+{
+    return forward;
+}
+
 glm::vec3 FPCamera::getLeft()
 {
     return left;
@@ -97,7 +104,7 @@ void FPCamera::update(float yaw, float pitch, glm::vec3 position)
     
     actualOffset = quatYaw * actualOffset;
     //actualOffset = Transform(actualOffset, quatYaw) is missing
-    glm::vec3 forward = actualOffset;    
+    forward = actualOffset;    
     forward = glm::normalize(forward);
 
     left = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), forward);

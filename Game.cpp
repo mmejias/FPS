@@ -103,7 +103,7 @@ void draw()
     float deltaX = mouse.getdelX();
     float deltaY = mouse.getdelY();
     player.render(deltaX, deltaY);
-
+    glFinish();
     rscreen.Buffer();
 }
 

@@ -82,17 +82,18 @@ void Player::moveForward(float m_dist)
 
 void Player::moveRight(float m_dist)
 {
+    glm::vec3 right = -camera.getLeft()*m_dist;
     glm::mat4 trans = glm::translate(glm::mat4(1.0f), position);
-    glm::vec4 move = glm::vec4(-m_dist, 0.0f, 0.0f, 1.0f);
+    glm::vec4 move = glm::vec4(right.x, right.y, right.z, 1.0f);
     glm::vec4 transformed = trans * move;
     position = glm::vec3(transformed);
 }
 
 void Player::moveLeft(float m_dist)
-{
-    
+{    
+    glm::vec3 left = camera.getLeft()*m_dist;
     glm::mat4 trans = glm::translate(glm::mat4(1.0f), position);
-    glm::vec4 move = glm::vec4(m_dist, 0.0f, 0.0f, 1.0f);
+    glm::vec4 move = glm::vec4(left.x, left.y, left.z, 1.0f);
     glm::vec4 transformed = trans * move;
     position = glm::vec3(transformed);
 }

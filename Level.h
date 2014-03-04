@@ -74,13 +74,15 @@ void Level::draw()
     //glEnable(GL_DEPTH_TEST);
     //glDisable(GL_LIGHTING);
     //glDisable(GL_TEXTURE_2D);
+    glPushMatrix();
     glBegin(GL_QUADS);
         glColor3f(0.0f, 0.0, 1.0f);
-        glVertex3f(-100.0f, 0, 100.0f);
-        glVertex3f(100.0f, 0, 100.0f);
-        glVertex3f(-100.0f, 0, -100.0f);
-        glVertex3f(100.0f, 0, -100.0f);
+        glVertex3f(-100.0f, 0.0f, -100.0f);
+        glVertex3f(-100.0f, 0.0f, 100.0f);
+        glVertex3f(100.0f, 0.0f, 100.0f);
+        glVertex3f(100.0f, 0.0f, -100.0f);
     glEnd();
+    glPopMatrix();
     glEnable(GL_LIGHTING);
     glEnable(GL_TEXTURE_2D);
  
