@@ -53,9 +53,7 @@ void FPCamera::init(glm::vec3 m_position, glm::vec3 m_verticalOffset, glm::vec3 
     target = eye + targetOffset;
     up = glm::vec3(0.0f, 1.0f, 0.0f);
     
-    gluLookAt(eye.x, eye.y, eye.z, 
-              target.x, target.y, target.z, 
-              up.x, up.y, up.z);
+    
 }
 
 float clamp(float, float, float);
@@ -92,7 +90,6 @@ void FPCamera::setTarget(glm::vec3 projectedTarget)
 
 void FPCamera::update(float yaw, float pitch, glm::vec3 position)
 {
-    
     totalYaw += yaw;
     totalPitch += pitch;
     
@@ -119,15 +116,13 @@ void FPCamera::update(float yaw, float pitch, glm::vec3 position)
    // actualOffset = quatYaw * quatPitch * actualOffset;
 
     target = eye + actualOffset;
-    
-    
 }
 
 void FPCamera::look()
 {
     gluLookAt(eye.x, eye.y, eye.z, 
               target.x, target.y, target.z, 
-              0, 1, 0);
+              up.x, up.y, up.z);
 }
 
 float clamp(float totalPitch, float m_angle, float m_angle2)

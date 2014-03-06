@@ -13,12 +13,10 @@ class Level
     public:
         Level(const char*);
         ~Level();
-        //bool loadObj(const char*, std::vector< glm::vec3 >&, std::vector< glm::vec2 >&, std::vector< glm::vec3 >&); 
         bool loadObj(const char*); 
         void draw();
         void update();
     private:
-//        float* vertices;
         std::vector < glm::vec3 > vertices;
         std::vector < glm::vec2 > uvs;
         std::vector < glm::vec3 > normals;
@@ -37,43 +35,6 @@ Level::~Level()
 
 void Level::draw()
 {
-    /*
-     * 
-    glClear( GL_COLOR_BUFFER_BIT);
-    glBegin(GL_QUADS);
-        glColor3f(1.0f, 0.0f, 0.0f);
-        glVertex3f(0, 0, 0);
-        glVertex3f(1, 0, 0);
-        glVertex3f(1, 1, 0);
-        glVertex3f(0, 1, 0);
-    glEnd();
-    */
-    /*
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    float lightpos[] = {0.0, 0.0, 0.0, 1.0};
-    glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
-    Sphere sphere;
-    sphere.draw();
-
-    
-    glClear( GL_COLOR_BUFFER_BIT);
-    glBegin(GL_QUADS);
-        glColor3f(1.0f, 0.0f, 0.0f);
-        glVertex3f(0, 0, 0);
-        glVertex3f(1, 0, 0);
-        glVertex3f(1, 1, 0);
-        glVertex3f(0, 1, 0);
-    glEnd();
-    */
-
-   //glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices, GL_STATIC_DRAW);
-  
-    //glClear( GL_COLOR_BUFFER_BIT );
-    //glEnable(GL_DEPTH_TEST);
-    //glDisable(GL_LIGHTING);
-    //glDisable(GL_TEXTURE_2D);
     glPushMatrix();
     glBegin(GL_QUADS);
         glColor3f(0.0f, 0.0, 1.0f);
