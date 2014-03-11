@@ -1,3 +1,6 @@
+#ifndef CAMERA_H
+#define CAMERA_H
+
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
@@ -136,4 +139,4 @@ float clamp(float totalPitch, float m_angle, float m_angle2)
         return totalPitch;
 }
 
-
+#endif

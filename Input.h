@@ -1,3 +1,6 @@
+#ifndef INPUT_H
+#define INPUT_H
+
 #include <X11/X.h>
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
@@ -153,3 +156,5 @@ void MouseHandler::onMove(XEvent event, int width, int height)
     deltaX = xpos - prevx;
     deltaY = ypos - prevy;
 }
+
+#endif

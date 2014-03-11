@@ -1,3 +1,6 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+
 //Followed: www.g-truc.net/project-0016.html
 
 #include <stdio.h>
@@ -145,3 +148,6 @@ void Player::fire()
     
     printf("Weapon fired\n");
 }
+
+
+#endif

@@ -1,6 +1,6 @@
-//Oh you thought I downloaded this.
-//Nope, a custom header for all your windowing needs on Linux
-//BAKOW
+#ifndef RSCREEN_H
+#define RSCREEN_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <X11/X.h>
@@ -146,3 +146,5 @@ void RScreen::Buffer()
     glXSwapBuffers(dpy, win);
     usleep(500);
 }
+
+#endif 

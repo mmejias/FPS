@@ -1,3 +1,6 @@
+#ifndef LEVEL_H
+#define LEVEL_H
+
 //Followed: www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/
 #include <glm/glm.hpp>
 #include <GL/gl.h>
@@ -124,4 +127,6 @@ bool Level::loadObj(const char* path)
             vertices.push_back(vertex);
         }
     }
-} 
+}
+
+#endif 
