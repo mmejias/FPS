@@ -64,7 +64,7 @@ void render()
 {
    while(1)
    {
-        if(XPending(rscreen.getDisplay()))
+        while(XPending(rscreen.getDisplay()))
         {
             rscreen.Draw();
             switch(rscreen.getEvent().type)
@@ -109,6 +109,7 @@ void draw()
 
 void handleKeys()
 {    
+    mouse.reset(0);    
     keyboard.keyDown(rscreen.getEvent());
     if(keyboard.isKeyDown(XK_Up))
     {
