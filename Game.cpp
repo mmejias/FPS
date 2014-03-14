@@ -36,6 +36,7 @@ KeyboardHandler keyboard;
 MouseHandler mouse(rscreen.getWidth(), rscreen.getHeight());
 Player player;
 Sphere spheres[5];
+Enemy opposition;
 
 int main(int argc, char** argv)
 {
@@ -99,6 +100,7 @@ void draw()
     glClearColor(0.88f, 0.93f, 0.93f, 1.0f);
     //DRAW OTHER OBJECST BETWEEN SCREEN VIEW AND BUFFER
     levelone.draw();
+    opposition.draw();
     for(unsigned int i = 0; i < 5; ++i)
         spheres[i].draw();
 
