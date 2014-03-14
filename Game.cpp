@@ -10,6 +10,7 @@
 #include "Input.h"
 #include "Player.h"
 #include "RScreen.h"
+#include "Enemy.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -50,7 +51,7 @@ void initialize()
     glViewport(0, 0, rscreen.getWidth(), rscreen.getHeight());
     
     lighting();
-     
+    
     spheres[0].x = -10.0f;  spheres[0].z = -10.0f; 
     spheres[1].x = 10.0f;   spheres[1].z = 10.0f;
     spheres[2].x = 0.0f;    spheres[2].z = 0.0f;
@@ -58,6 +59,7 @@ void initialize()
     spheres[4].x = 10.0f; spheres[4].z = -10.0f;
     for(unsigned int i = 0; i < 5; ++i)
         spheres[i].y = 0.5f;
+    
 }
 
 void render()

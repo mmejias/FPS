@@ -96,7 +96,7 @@ void FPCamera::update(float yaw, float pitch, glm::vec3 position)
     totalYaw += yaw;
     totalPitch += pitch;
     
-//    totalPitch = clamp(totalPitch, 90.0f, -90.0f);
+    totalPitch = clamp(totalPitch, 90.0f, -90.0f);
     
     glm::vec3 actualOffset = targetOffset;
     //glm::quat quatYaw = glm::angleAxis((totalYaw), actualOffset); 

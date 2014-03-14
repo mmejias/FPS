@@ -30,7 +30,6 @@ class Player
         void rotateZ();
 
         void render(float, float);
-    //protected:
         glm::vec3 position;
         glm::vec3 view;
         glm::vec3 up;
@@ -78,7 +77,11 @@ void Player::render(float yaw, float pitch)
 void Player::moveForward(float m_dist)
 {
     glm::mat4 trans = glm::translate(glm::mat4(1.0f), position);
-    glm::vec4 move = glm::vec4(0.0f, 0.0f, m_dist, 1.0f);
+    //glm::vec4 move = glm::vec4(0.0f, 0.0f, m_dist, 1.0f);
+    glm::vec4 move = glm::vec4(camera.getForward().x, 
+                               camera.getForward().y, 
+                               camera.getForward().z, 
+                               1.0f);
     glm::vec4 transformed = trans * move;
     position = glm::vec3(transformed);
 }
@@ -105,7 +108,11 @@ void Player::moveBackward(float m_dist)
 {
     
     glm::mat4 trans = glm::translate(glm::mat4(1.0f), position);
-    glm::vec4 move = glm::vec4(0.0f, 0.0f, -m_dist, 1.0f);
+    //glm::vec4 move = glm::vec4(0.0f, 0.0f, -m_dist, 1.0f);
+    glm::vec4 move = glm::vec4(-camera.getForward().x, 
+                               -camera.getForward().y, 
+                               -camera.getForward().z,
+                                1.0f);
     glm::vec4 transformed = trans * move;
     position = glm::vec3(transformed);
 }
