@@ -6,6 +6,9 @@
 #include <vector>
 #include "Geometry.h"
 
+#ifndef BLASTER_H
+#define BLASTER_H
+
 class Bullet
 {
     public:
@@ -107,4 +110,4 @@ void Blaster::update()
 //   projectiles.erase(std::remove_if(projectiles.begin(), projectiles.end(), isVisible));
    
 }
-
+#endif

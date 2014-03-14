@@ -1,6 +1,3 @@
-#ifndef PLAYER_H
-#define PLAYER_H
-
 //Followed: www.g-truc.net/project-0016.html
 
 #include <stdio.h>
@@ -12,13 +9,22 @@
 #include <queue>
 #include "Blaster.h"
 #include "Camera.h"
+#include "Subject.h"
+#include "Observer.h"
+
+#ifndef PLAYER_H
+#define PLAYER_H
 
 
-class Player
+class Player : public Subject
 {
     public:
         Player();
         ~Player();
+        void registerObserver(Observer);
+        void unregisterObserver(Observer);
+        void notifyObservers();
+        
         void fire();
         void moveBackward(float);
         void moveForward(float);
@@ -36,16 +42,21 @@ class Player
         float angle;
         float rotX, rotY, rotZ;
     protected:
+        Observer observers[100];
         FPCamera camera;
         Blaster weapon;
+        int space;
+        unsigned int watchers;   //size of observers array 
 };
 
 Player::Player()
 {
-   position = glm::vec3(0.0f, 0.0f, 0.0f);
+   space = -1;
+   watchers = 0;
+   position = glm::vec3(0.0f, 0.0f, -25.0f);
    view = glm::vec3(0.0f, 0.0f, 1.0f);
    up = glm::vec3(0.0f, 1.0f, 0.0f);
-
+    
    angle = 0.0f;
    rotX = rotY = rotZ = 0.0f;
 
@@ -55,6 +66,37 @@ Player::Player()
 Player::~Player()
 {
     printf("Delete Player\n");
+}
+
+void Player::notifyObservers()
+{
+
+}
+
+void Player::registerObserver(Observer observer)
+{
+    if(space != -1)
+    {
+        observer.setId(space);
+        observers[space] = observer;
+        space = -1;
+    }
+    else if(watchers < 100)
+    {
+        observer.setId(watchers);
+        observers[watchers] = observer;
+        ++watchers;
+    }
+    else
+    {
+        printf("Reconsider size of observer array\n");
+        printf("Out of bounds\n");
+    }
+}
+
+void Player::unregisterObserver(Observer observer)
+{
+    space = observer.getId();
 }
 
 void Player::render(float yaw, float pitch)

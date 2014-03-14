@@ -8,7 +8,7 @@ class Subject
     public:
         virtual void registerObserver(Observer) = 0;
         virtual void unregisterObserver(Observer) = 0;
-        virtual void notifyObservers(Observer) = 0;
+        virtual void notifyObservers() = 0;
     private:
         Observer observers[100];
 };

@@ -110,13 +110,12 @@ void FPCamera::update(float yaw, float pitch, glm::vec3 position)
     left = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), forward);
     left = glm::normalize(left);
     
-    //glm::quat quatPitch = glm::angleAxis((totalPitch), actualOffset);
     glm::quat quatPitch = glm::angleAxis(glm::radians(totalPitch), X_AXIS);
-    
+    quatPitch = glm::normalize(quatPitch);
+        
     actualOffset = quatPitch * actualOffset;
 
     eye = position + verticalOffset;
-   // actualOffset = quatYaw * quatPitch * actualOffset;
 
     target = eye + actualOffset;
 }
@@ -130,7 +129,6 @@ void FPCamera::look()
 
 float clamp(float totalPitch, float m_angle, float m_angle2)
 {
-    //while(toalPitch > m_angle && totalPitch < m_angle2)
     if(totalPitch > m_angle)
         return totalPitch - m_angle;
     if(totalPitch < m_angle2)

@@ -1,11 +1,3 @@
-/**
- *
- *Rotation on an axis to get look around effect. Does not work
-  Blaster does not work two fixes and you are all set
- *
- */
-
-
 #include "Level.h"
 #include "Input.h"
 #include "Player.h"
@@ -48,11 +40,33 @@ int main(int argc, char** argv)
 
 void initialize()
 {
+    static Cursor cursor;
     rscreen.Initialize();
-    glViewport(0, 0, rscreen.getWidth(), rscreen.getHeight());
     
+    //Grab Pointer
+    XGrabPointer(rscreen.getDisplay(),
+                 rscreen.getWindow(),
+                 False,
+                 EnterWindowMask | LeaveWindowMask | PointerMotionMask,
+                 GrabModeAsync,
+                 GrabModeAsync,
+                 rscreen.getWindow(),
+                 cursor,
+                 CurrentTime);
+    
+    XGrabKeyboard(rscreen.getDisplay(),
+                  rscreen.getWindow(),
+                  False,
+                  GrabModeAsync,
+                  GrabModeAsync,
+                  CurrentTime);    
+
+
+    glViewport(0, 0, rscreen.getWidth(), rscreen.getHeight());
+     
     lighting();
     
+    /*
     spheres[0].x = -10.0f;  spheres[0].z = -10.0f; 
     spheres[1].x = 10.0f;   spheres[1].z = 10.0f;
     spheres[2].x = 0.0f;    spheres[2].z = 0.0f;
@@ -60,7 +74,7 @@ void initialize()
     spheres[4].x = 10.0f; spheres[4].z = -10.0f;
     for(unsigned int i = 0; i < 5; ++i)
         spheres[i].y = 0.5f;
-    
+    */
 }
 
 void render()

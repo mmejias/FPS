@@ -15,6 +15,7 @@ class RScreen
     public:
        RScreen();
        RScreen(int, int);
+       Window getWindow();
        Display* getDisplay();
        int getWidth();
        int getHeight();
@@ -55,6 +56,11 @@ RScreen::RScreen (int m_width, int m_height)
 {
     width = m_width;
     height = m_height;
+}
+
+Window RScreen::getWindow()
+{
+    return root;
 }
 
 Display* RScreen::getDisplay()
