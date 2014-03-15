@@ -1,4 +1,6 @@
 //Followed: www.g-truc.net/project-0016.html
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #include <stdio.h>
 #include <GL/gl.h>
@@ -11,19 +13,16 @@
 #include "Camera.h"
 #include "Subject.h"
 #include "Observer.h"
-
-#ifndef PLAYER_H
-#define PLAYER_H
-
+#include "Enemy.h"
 
 class Player : public Subject
 {
     public:
         Player();
         ~Player();
-        void registerObserver(Observer);
-        void unregisterObserver(Observer);
-        void notifyObservers();
+        virtual void registerObserver(Enemy);
+        virtual void unregisterObserver(Enemy);
+        virtual void notifyObservers();
         
         void fire();
         void moveBackward(float);
@@ -42,7 +41,7 @@ class Player : public Subject
         float angle;
         float rotX, rotY, rotZ;
     protected:
-        Observer observers[100];
+        Enemy observers[100];
         FPCamera camera;
         Blaster weapon;
         int space;
@@ -70,10 +69,14 @@ Player::~Player()
 
 void Player::notifyObservers()
 {
-
+    for(unsigned int i = 0; i < watchers; ++i)
+    {
+        observers[i].notify(this->position);
+    }
+    
 }
 
-void Player::registerObserver(Observer observer)
+void Player::registerObserver(Enemy observer)
 {
     if(space != -1)
     {
@@ -94,7 +97,7 @@ void Player::registerObserver(Observer observer)
     }
 }
 
-void Player::unregisterObserver(Observer observer)
+void Player::unregisterObserver(Enemy observer)
 {
     space = observer.getId();
 }

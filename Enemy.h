@@ -1,10 +1,10 @@
-#include "Mathematics/Generator.h"
-#include "Player.h"
-#include "Observer.h"
-#include "Geometry.h"
-
 #ifndef ENEMY_H
 #define ENEMY_H
+
+#include <glm/glm.hpp>
+#include "Mathematics/Generator.h"
+#include "Observer.h"
+#include "Geometry.h"
 
 class Enemy : public Observer
 {
@@ -13,7 +13,7 @@ class Enemy : public Observer
         glm::vec3 mPosition;
         Sphere mEntity;
         unsigned int getId();
-        void notify();
+        void notify(glm::vec3);
         void setId(unsigned int);
         void draw();
         void update();
@@ -48,7 +48,7 @@ void Enemy::update()
 }
 
 
-void Enemy::notify()
+void Enemy::notify(glm::vec3 player)
 {
     printf("Notify observer\n");
 }
