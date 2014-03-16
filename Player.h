@@ -59,7 +59,7 @@ Player::Player()
    angle = 0.0f;
    rotX = rotY = rotZ = 0.0f;
 
-   camera.init(position, glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+   camera.init(position, glm::vec3(0.0f, 3.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 }
 
 Player::~Player()
