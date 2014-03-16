@@ -160,8 +160,8 @@ void MouseHandler::onMove(XEvent event, int width, int height)
 
 void MouseHandler::reset(int reset)
 {
-    xpos = 0;
-    ypos = 0;
+    //xpos = 0;
+    //ypos = 0;
     deltaX = 0;
     deltaY = 0;
     prevx = 0;
