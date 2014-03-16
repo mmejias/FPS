@@ -40,17 +40,17 @@ Level::~Level()
 
 void Level::draw()
 {
-    vertices.push_back(glm::vec3(-100.0f, 0.0f, -100.0f));
-    vertices.push_back(glm::vec3(-100.0f, 0.0f, 100.0f));
-    vertices.push_back(glm::vec3(100.0f, 0.0f, 100.0f));
-    vertices.push_back(glm::vec3(100.0f, 0.0f, -100.0f));
+    vertices.push_back(glm::vec3(-1000.0f, 0.0f, -1000.0f));
+    vertices.push_back(glm::vec3(-1000.0f, 0.0f, 1000.0f));
+    vertices.push_back(glm::vec3(1000.0f, 0.0f, 1000.0f));
+    vertices.push_back(glm::vec3(1000.0f, 0.0f, -1000.0f));
     glPushMatrix();
     glBegin(GL_QUADS);
         glColor3f(0.0f, 0.0, 1.0f);
-        /*glVertex3f(-100.0f, 0.0f, -100.0f);
-        glVertex3f(-100.0f, 0.0f, 100.0f);
-        glVertex3f(100.0f, 0.0f, 100.0f);
-        glVertex3f(100.0f, 0.0f, -100.0f);*/
+        /*glVertex3f(-1000.0f, 0.0f, -1000.0f);
+        glVertex3f(-1000.0f, 0.0f, 1000.0f);
+        glVertex3f(1000.0f, 0.0f, 1000.0f);
+        glVertex3f(1000.0f, 0.0f, -1000.0f);*/
         for(unsigned int i = 0; i < vertices.size(); ++i)
         {
             glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
