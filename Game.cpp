@@ -4,6 +4,7 @@
 #include "RScreen.h"
 #include "Enemy.h"
 
+#include <cmath>
 #include <stdio.h>
 #include <stdlib.h>
 #include <X11/X.h>
@@ -12,7 +13,9 @@
 #include <GL/glx.h>
 #include <GL/glu.h>
 #include <unistd.h>
+#include "Crosshair.h"
 
+void alert();
 void draw();
 void initialize();
 void render();
@@ -27,8 +30,9 @@ Level levelone("LevelOne.obj");
 KeyboardHandler keyboard;
 MouseHandler mouse(rscreen.getWidth(), rscreen.getHeight());
 Player player;
-Sphere spheres[5];
-Enemy opposition;
+//Sphere spheres[5];
+Enemy opposition[5];
+Crosshair reticle(rscreen.getWidth(), rscreen.getHeight());
 
 int main(int argc, char** argv)
 {
@@ -65,16 +69,28 @@ void initialize()
     glViewport(0, 0, rscreen.getWidth(), rscreen.getHeight());
      
     lighting();
-    
-    /*
-    spheres[0].x = -10.0f;  spheres[0].z = -10.0f; 
-    spheres[1].x = 10.0f;   spheres[1].z = 10.0f;
-    spheres[2].x = 0.0f;    spheres[2].z = 0.0f;
-    spheres[3].x = -10.0f; spheres[3].z = 10.0f;
-    spheres[4].x = 10.0f; spheres[4].z = -10.0f;
-    for(unsigned int i = 0; i < 5; ++i)
-        spheres[i].y = 0.5f;
-    */
+    player.position.z = -100.0f;
+    opposition[0].position.x = -10.0f;  opposition[0].position.z = -10.f;
+    opposition[1].position.x = 10.0f;   opposition[1].position.z = 10.0f;
+    opposition[2].position.x = 0.0f;    opposition[2].position.z = 0.0f;
+    opposition[3].position.x = 10.0f;   opposition[3].position.z = -10.0f;
+    opposition[4].position.x = -10.0f;  opposition[4].position.z = 10.0f;
+
+    for(unsigned int i = 0; i < 1; ++i)
+    {
+        player.registerObserver(opposition[i]);
+    }
+}
+
+void alert()
+{
+    for(unsigned int i = 0; i < 1; ++i)
+    {
+        if(std::fabs(opposition[i].position.x - player.position.x) <= 10 ||
+           std::fabs(opposition[i].position.z - player.position.z) <= 10)
+                player.notifyObservers(); 
+                printf("Letting them know\n");
+    }
 }
 
 void render()
@@ -99,9 +115,12 @@ void render()
                 case MotionNotify:
                     handleMouse();
                     break;
+                case LeaveNotify:
+                    mouse.onMove(rscreen.getEvent(), rscreen.getWidth(), rscreen.getHeight());    
+                    break;
             }
             draw();
-            usleep(500);
+//            usleep(1);
         }
    }
 }
@@ -114,13 +133,20 @@ void draw()
     glClearColor(0.88f, 0.93f, 0.93f, 1.0f);
     //DRAW OTHER OBJECST BETWEEN SCREEN VIEW AND BUFFER
     levelone.draw();
-    opposition.draw();
+//    alert();   
     for(unsigned int i = 0; i < 5; ++i)
-        spheres[i].draw();
+    {
+        opposition[i].update();
+        opposition[i].draw();
+    }
 
     float deltaX = mouse.getdelX();
     float deltaY = mouse.getdelY();
+
+    reticle.draw();
+
     player.render(deltaX, deltaY);
+
     glFinish();
     rscreen.Buffer();
 }
@@ -131,19 +157,19 @@ void handleKeys()
     keyboard.keyDown(rscreen.getEvent());
     if(keyboard.isKeyDown(XK_Up))
     {
-        player.moveForward(0.0625);
+        player.moveForward(1.0f);
     }
     if(keyboard.isKeyDown(XK_Left))
     {
-        player.moveLeft(0.0625);
+        player.moveLeft(1.0f);
     }
     if(keyboard.isKeyDown(XK_Right))
     {
-        player.moveRight(0.0625);
+        player.moveRight(1.0f);
     }
     if(keyboard.isKeyDown(XK_Down))
     {
-        player.moveBackward(0.0625);
+        player.moveBackward(1.0f);
     }
     if(keyboard.isKeyDown(XK_space))
     {
