@@ -6,6 +6,7 @@
 #include <vector>
 #include <stdlib.h>
 #include "Mathematics/Generator.h"
+#include "Pathfinding/Pathfinding.h"
 #include "Observer.h"
 #include "Geometry.h"
 #include "Level.h"
@@ -78,6 +79,7 @@ void Enemy::update()
                                    1.0f);
         glm::vec4 transformed = trans * move;
         position = glm::vec3(transformed);
+        path.pop_back();
     }
 }
 
@@ -85,11 +87,8 @@ void Enemy::update()
 void Enemy::notify(glm::vec3 player)
 {
     printf("Notify observer\n");
-    path.push_back(player);
-    
-    //A-Star search
-    
-    
-    path.push_back(position); 
+    //A* Star search
+    findPath(path, player, position, map); 
+    hasPath = true;
 }
 #endif
