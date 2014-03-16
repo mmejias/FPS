@@ -20,10 +20,13 @@ class Node
         float getG();
         float getH();
         glm::vec3 getPosition();
+        void calculateFn();
         void setF(float);
         void setG(float);
         void setH(float);
-        void calculateFn();
+        void setPosition(glm::vec3);
+        void unvisit();
+        void visit();
     private:
         bool visited;
         float f;
@@ -31,6 +34,23 @@ class Node
         float h;
         glm::vec3 position;
 };
+
+Node::Node()
+{
+    visited = false;
+    f = 0.0f;
+    g = 0.0f;
+    h = 0.0f;
+}
+
+Node::Node(glm::vec3 m_position)
+{
+    visited = false;
+    f = 0.0f;
+    g = 0.0f;
+    h = 0.0f;
+    position = m_position;
+}
 
 bool Node::isVisited()
 {
@@ -125,9 +145,24 @@ void Node::setH(float m_h)
     h = m_h;
 }
 
+void Node::setPosition(glm::vec3 m_position)
+{
+    position = m_position;
+}
+
 void Node::calculateFn()
 {
     f = g+h;
+}
+
+void Node::visit()
+{
+    visited = true;
+}
+
+void Node::unvisit()
+{
+    visited = false;
 }
 
 #endif
