@@ -27,6 +27,7 @@ void Crosshair::draw()
     float m_height = (float) height;
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_LIGHTING);
+    glPushMatrix();
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
@@ -38,6 +39,7 @@ void Crosshair::draw()
         glVertex2f(m_width/2-10, m_height/2);
         glVertex2f(m_width/2+10, m_height/2);
     glEnd();
+    glPopMatrix();
     glPopMatrix();
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
