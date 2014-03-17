@@ -27,22 +27,25 @@ class Enemy : public Observer
         void update();
     private:
         bool hasPath;
+        bool onPatrol;
         unsigned int id;
+        unsigned int point;
+        Level* map;
         std::vector<glm::vec3> path;
         std::vector<glm::vec3> patrol;
-        Level* map;
 };
 
 
 Enemy::Enemy()
 {    
+    onPatrol = true;
     hasPath = false;
     position.y = 1.0f;
     mEntity.y = position.y;
     mEntity.setRadius(2.5f);    
-
+    point = 0;
     //Set up a patrol region for Enemy
-    //constructPatrol(patrol, position);
+    constructPatrol(patrol, position);
 }
 
 Enemy::~Enemy()
@@ -78,12 +81,22 @@ void Enemy::setId(unsigned int m_id)
 void Enemy::update()
 {
     glm::mat4 trans = glm::translate(glm::mat4(1.0f), position);
-    glm::vec4 move = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-    glm::vec4 transformed = trans * move;
-    position = glm::vec3(transformed);
+    
+    if(onPatrol)
+    { 
+        if(point >= patrol.size())
+            point = 0;
+        glm::vec4 move = glm::vec4(patrol[point].x,
+                                   0.0f,
+                                   patrol[point].z,
+                                   1.0f);
+        glm::vec4 transformed = trans * move;
+        position = glm::vec3(transformed);
+        ++point;
+    }
 
     mEntity.x = position.x;
-    mEntity.y = position.y;
+    mEntity.y = position.y; 
     mEntity.z = position.z;
 }
 

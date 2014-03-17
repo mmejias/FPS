@@ -197,27 +197,27 @@ void findPath(std::vector<glm::vec3> &path, glm::vec3 m_start, glm::vec3 m_end, 
 
 void constructPatrol(std::vector<glm::vec3>& patrol, glm::vec3 start)
 {
+    glm::vec3 left = glm::vec3(0.03125f, 0.0f, 0.0f);
+    glm::vec3 forward = glm::vec3(0.0f, 0.0f, 0.03125f);
     patrol.push_back(start);
-    for(float i = 1; i <= 10; ++i)
+    for(float i = 0; i < 64; ++i)
     {
-        start.x += 1;
-        patrol.push_back(start);
+        patrol.push_back(left);
     }
-    for(float i = 1; i <= 10; ++i)
+    for(float i = 0; i < 64; ++i)
     {
-        start.z += 1;
-        patrol.push_back(start);
+        patrol.push_back(forward);
     }
-    for(float i = 1; i <= 10; ++i)
+    
+    for(float i = 0; i < 64; ++i)
     {
-        start.x -= 1;
-        patrol.push_back(start);
+        patrol.push_back(-left);
     }
-    for(float i = 1; i <= 10; ++i)
+    for(float i = 0; i < 64; ++i)
     {
-        start.z -= 1;
-        patrol.push_back(start);
+        patrol.push_back(-forward);
     }
+    
 }
 
 #endif
