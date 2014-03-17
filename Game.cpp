@@ -5,6 +5,7 @@
 #include "Enemy.h"
 
 #include <cmath>
+#include <ctime>
 #include <stdio.h>
 #include <stdlib.h>
 #include <X11/X.h>
@@ -21,6 +22,7 @@ void initialize();
 void render();
 void update();
 void release();
+void handleEvents();
 void handleKeys();
 void handleMouse();
 void lighting();
@@ -30,7 +32,6 @@ Level levelone("LevelOne.obj");
 KeyboardHandler keyboard;
 MouseHandler mouse(rscreen.getWidth(), rscreen.getHeight());
 Player player;
-//Sphere spheres[5];
 Enemy opposition[5];
 Crosshair reticle(rscreen.getWidth(), rscreen.getHeight());
 
@@ -99,33 +100,28 @@ void alert()
 
 void render()
 {
+   double timeDelta = 1000.0/24.0;
+   double timeAccumulator = 0.0;
+   
    while(1)
    {
+        clock_t currentTime;
+        clock_t startTime = clock();
+        
         while(XPending(rscreen.getDisplay()))
+        //while(timeAccumulator >= timeDelta )
         {
+            timeAccumulator -= timeDelta;
+            
             rscreen.Draw();
-            switch(rscreen.getEvent().type)
-            {
-                case Expose:
-                    draw();
-                    usleep(500);
-                    break;
-                case KeyPress:
-                    handleKeys();
-                    break;
-                case KeyRelease:
-                     release();
-                     break;
-                case MotionNotify:
-                    handleMouse();
-                    break;
-                case LeaveNotify:
-                    mouse.onMove(rscreen.getEvent(), rscreen.getWidth(), rscreen.getHeight());    
-                    break;
-            }
-            draw();
-            usleep(500);
+            
+            handleEvents();
+             
+            currentTime = clock();
+            timeAccumulator += double(currentTime - startTime);
         }
+
+        draw();
    }
 }
 
@@ -153,6 +149,29 @@ void draw()
 
     glFinish();
     rscreen.Buffer();
+}
+
+void handleEvents()
+{
+
+            switch(rscreen.getEvent().type)
+            {
+                case Expose:
+                    draw();
+                    break;
+                case KeyPress:
+                    handleKeys();
+                    break;
+                case KeyRelease:
+                     release();
+                     break;
+                case MotionNotify:
+                    handleMouse();
+                    break;
+                case LeaveNotify:
+                    mouse.onMove(rscreen.getEvent(), rscreen.getWidth(), rscreen.getHeight());    
+                    break;
+            }
 }
 
 void handleKeys()
