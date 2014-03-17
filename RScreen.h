@@ -20,6 +20,7 @@ class RScreen
        int getWidth();
        int getHeight();
        XEvent getEvent();
+       XEvent* getEventP();
        void View();
        void Initialize();
        void Draw();
@@ -81,6 +82,11 @@ int RScreen::getHeight()
 XEvent RScreen::getEvent()
 {
     return xev;
+}
+
+XEvent* RScreen::getEventP()
+{
+    return &xev;
 }
 
 void RScreen::View()
