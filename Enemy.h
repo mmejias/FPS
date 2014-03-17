@@ -19,6 +19,7 @@ class Enemy : public Observer
         glm::vec3 position;
         Sphere mEntity;
         unsigned int getId();
+        bool pathExists();
         void notify(glm::vec3);
         void setId(unsigned int);
         void setMap(Level*);
@@ -28,6 +29,7 @@ class Enemy : public Observer
         bool hasPath;
         unsigned int id;
         std::vector<glm::vec3> path;
+        std::vector<glm::vec3> patrol;
         Level* map;
 };
 
@@ -38,6 +40,9 @@ Enemy::Enemy()
     position.y = 1.0f;
     mEntity.y = position.y;
     mEntity.setRadius(2.5f);    
+
+    //Set up a patrol region for Enemy
+    //constructPatrol(patrol, position);
 }
 
 Enemy::~Enemy()
@@ -48,6 +53,11 @@ Enemy::~Enemy()
 unsigned int Enemy::getId()
 {
     return id;
+}
+
+bool Enemy::pathExists()
+{
+    return hasPath;
 }
 
 void Enemy::setMap(Level* m_map)
@@ -67,28 +77,25 @@ void Enemy::setId(unsigned int m_id)
 
 void Enemy::update()
 {
+    glm::mat4 trans = glm::translate(glm::mat4(1.0f), position);
+    glm::vec4 move = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+    glm::vec4 transformed = trans * move;
+    position = glm::vec3(transformed);
+
     mEntity.x = position.x;
+    mEntity.y = position.y;
     mEntity.z = position.z;
-
-    if(hasPath && !path.empty())
-    {
-        glm::mat4 trans = glm::translate(glm::mat4(1.0f), position);
-        glm::vec4 move = glm::vec4(path[path.size()-1].x,
-                                   path[path.size()-1].y,
-                                   path[path.size()-1].z,
-                                   1.0f);
-        glm::vec4 transformed = trans * move;
-        position = glm::vec3(transformed);
-        path.pop_back();
-    }
 }
-
 
 void Enemy::notify(glm::vec3 player)
 {
     printf("Notify observer\n");
-    //A* Star search
-    findPath(path, player, position, map); 
+    
+    path.clear();
+    findPath(path, player, position, map);
+    //Set State to Alert
+
     hasPath = true;
 }
+
 #endif
