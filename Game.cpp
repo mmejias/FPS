@@ -76,7 +76,7 @@ void initialize()
     opposition[3].position.x = 10.0f;   opposition[3].position.z = -10.0f;
     opposition[4].position.x = -10.0f;  opposition[4].position.z = 10.0f;
 
-    for(unsigned int i = 0; i < 1; ++i)
+    for(unsigned int i = 0; i < 5; ++i)
     {
         player.registerObserver(opposition[i]);
     }
@@ -84,12 +84,15 @@ void initialize()
 
 void alert()
 {
-    for(unsigned int i = 0; i < 1; ++i)
+    for(unsigned int i = 0; i < 5; ++i)
     {
-        if(std::fabs(opposition[i].position.x - player.position.x) <= 10 ||
-           std::fabs(opposition[i].position.z - player.position.z) <= 10)
-                player.notifyObservers(); 
-                printf("Letting them know\n");
+        if((std::fabs(opposition[i].position.x - player.position.x) <= 20.0  ||
+            std::fabs(opposition[i].position.z - player.position.z) <= 20.0) &&
+            !opposition[i].pathExists())
+            {
+                player.notifyObserver(opposition[i].getId()); 
+                printf("Notifying observer %d\n", (int)opposition[i].getId());
+            }
     }
 }
 
@@ -120,7 +123,7 @@ void render()
                     break;
             }
             draw();
-//            usleep(1);
+            usleep(500);
         }
    }
 }
@@ -133,7 +136,7 @@ void draw()
     glClearColor(0.88f, 0.93f, 0.93f, 1.0f);
     //DRAW OTHER OBJECST BETWEEN SCREEN VIEW AND BUFFER
     levelone.draw();
-//    alert();   
+    //alert();   
     for(unsigned int i = 0; i < 5; ++i)
     {
         opposition[i].update();
