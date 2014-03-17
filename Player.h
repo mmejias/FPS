@@ -23,6 +23,7 @@ class Player : public Subject
         virtual void registerObserver(Enemy);
         virtual void unregisterObserver(Enemy);
         virtual void notifyObservers();
+        void notifyObserver(unsigned int);
         
         void fire();
         void moveBackward(float);
@@ -76,6 +77,12 @@ void Player::notifyObservers()
     
 }
 
+void Player::notifyObserver(unsigned int m_id)
+{
+    if(m_id >= 0 && m_id < watchers)
+        observers[m_id].notify(this->position);
+}
+
 void Player::registerObserver(Enemy observer)
 {
     if(space != -1)
@@ -122,7 +129,6 @@ void Player::render(float yaw, float pitch)
 void Player::moveForward(float m_dist)
 {
     glm::mat4 trans = glm::translate(glm::mat4(1.0f), position);
-    //glm::vec4 move = glm::vec4(0.0f, 0.0f, m_dist, 1.0f);
     glm::vec4 move = glm::vec4(camera.getForward().x, 
                                camera.getForward().y, 
                                camera.getForward().z, 
