@@ -11,6 +11,8 @@
 #include <string.h>
 #include <vector>
 
+#include "Ground.h"
+
 class Level
 {
     public:
@@ -19,6 +21,8 @@ class Level
         bool loadObj(const char*); 
         void draw();
         void update();
+    protected:
+        Ground* ground;
     private:
         std::vector < glm::vec3 > vertices;
         std::vector < glm::vec2 > uvs;
@@ -27,7 +31,7 @@ class Level
 
 Level::Level(const char* path)
 {
-  loadObj(path);
+    ground = new Ground();
 }
 
 Level::~Level()
@@ -40,34 +44,9 @@ Level::~Level()
 
 void Level::draw()
 {
-    vertices.push_back(glm::vec3(-1000.0f, 0.0f, -1000.0f));
-    vertices.push_back(glm::vec3(-1000.0f, 0.0f, 1000.0f));
-    vertices.push_back(glm::vec3(1000.0f, 0.0f, 1000.0f));
-    vertices.push_back(glm::vec3(1000.0f, 0.0f, -1000.0f));
-    glPushMatrix();
-    glBegin(GL_QUADS);
-        glColor3f(0.0f, 0.0, 1.0f);
-        /*glVertex3f(-1000.0f, 0.0f, -1000.0f);
-        glVertex3f(-1000.0f, 0.0f, 1000.0f);
-        glVertex3f(1000.0f, 0.0f, 1000.0f);
-        glVertex3f(1000.0f, 0.0f, -1000.0f);*/
-        for(unsigned int i = 0; i < vertices.size(); ++i)
-        {
-            glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
-        }   
-    glEnd();
-    glPopMatrix();
-    glEnable(GL_LIGHTING);
-    glEnable(GL_TEXTURE_2D);
- 
+    ground->draw();
 }
 
-/*
-bool Level::loadObj(const char* path,
-                    std::vector< glm::vec3 >& out_vertices,
-                    std::vector< glm::vec2 >& out_uvs,
-                    std::vector< glm::vec3 >& out_normals)
-*/
 bool Level::loadObj(const char* path)
 {
     std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;

@@ -69,6 +69,7 @@ void initialize()
     glViewport(0, 0, rscreen.getWidth(), rscreen.getHeight());
      
     lighting();
+
     player.position.z = -100.0f;
     opposition[0].position.x = -10.0f;  opposition[0].position.z = -10.f;
     opposition[1].position.x = 10.0f;   opposition[1].position.z = 10.0f;
@@ -136,7 +137,7 @@ void draw()
     glClearColor(0.88f, 0.93f, 0.93f, 1.0f);
     //DRAW OTHER OBJECST BETWEEN SCREEN VIEW AND BUFFER
     levelone.draw();
-    //alert();   
+
     for(unsigned int i = 0; i < 5; ++i)
     {
         opposition[i].update();
