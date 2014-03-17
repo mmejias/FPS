@@ -10,7 +10,12 @@
 
 bool isGoal(Node current, Node goal)
 {
-    if(current == goal)
+    if((current.getPosition().x - goal.getPosition().x) <= 5 &&
+       (current.getPosition().x - goal.getPosition().x) >  0 &&
+       (current.getPosition().y - goal.getPosition().y) <= 5 &&
+       (current.getPosition().y - goal.getPosition().y) >  0 &&
+       (current.getPosition().z - goal.getPosition().z) <= 5 &&
+       (current.getPosition().z - goal.getPosition().z) >  0 )
         return true;
     else
         return false;    
@@ -18,13 +23,13 @@ bool isGoal(Node current, Node goal)
 
 bool isAdjacent(Node current, Node next)
 {
-    if(std::fabs(current.getPosition().x - next.getPosition().x) > 1 ||
+    if(std::fabs(current.getPosition().x - next.getPosition().x) > 5 ||
        std::fabs(current.getPosition().x - next.getPosition().x) == 0)
         return false;
-    if(std::fabs(current.getPosition().y - next.getPosition().y) > 1 ||
+    if(std::fabs(current.getPosition().y - next.getPosition().y) > 5 ||
        std::fabs(current.getPosition().y - next.getPosition().y) == 0)
         return false;
-    if(std::fabs(current.getPosition().z - next.getPosition().z) > 1 ||
+    if(std::fabs(current.getPosition().z - next.getPosition().z) > 5 ||
        std::fabs(current.getPosition().z - next.getPosition().z) == 0)
         return false;
 
@@ -37,7 +42,7 @@ float calculateHn(Node current, Node goal)
     float dy = fabs(current.getPosition().y - goal.getPosition().y);
     float dz = fabs(current.getPosition().z - goal.getPosition().z);
     
-    return 10.0f * sqrt(dx * dx + dy * dy + dz * dz);       
+    return 100.0f * sqrt(dx * dx + dy * dy + dz * dz);       
 }
 
 void addCloseList(std::vector<Node>& closelist, Node current)
@@ -118,14 +123,14 @@ void generateSuccessors(bool& pathsGenerated,
     float y = current.getPosition().y;
     float z = current.getPosition().z;
     
-    successors[0].setPosition(glm::vec3(x-1.0f, y, z-1.0f));
-    successors[1].setPosition(glm::vec3(x-1.0f, y, z));
-    successors[2].setPosition(glm::vec3(x, y, z-1.0f));
-    successors[3].setPosition(glm::vec3(x+1.0f, y, z+1.0f));
-    successors[4].setPosition(glm::vec3(x+1.0f, y, z));
-    successors[5].setPosition(glm::vec3(x, y, z+1.0f));
-    successors[6].setPosition(glm::vec3(x-1.0f, y, z+1.0f));
-    successors[7].setPosition(glm::vec3(x+1.0f, y, z-1.0f));        
+    successors[0].setPosition(glm::vec3(x-5.0f, y, z-5.0f));
+    successors[1].setPosition(glm::vec3(x-5.0f, y, z));
+    successors[2].setPosition(glm::vec3(x, y, z-5.0f));
+    successors[3].setPosition(glm::vec3(x+5.0f, y, z+5.0f));
+    successors[4].setPosition(glm::vec3(x+5.0f, y, z));
+    successors[5].setPosition(glm::vec3(x, y, z+5.0f));
+    successors[6].setPosition(glm::vec3(x-5.0f, y, z+5.0f));
+    successors[7].setPosition(glm::vec3(x+5.0f, y, z-5.0f));        
     
     for(unsigned int i = 0; i < 8; ++i)
         successors[i].visit();
@@ -151,6 +156,7 @@ void findPath(std::vector<glm::vec3> &path, glm::vec3 m_start, glm::vec3 m_end, 
     std::vector<Node> openlist, closelist;
 
     //Push start on the openlist
+    path.clear();
     openlist.push_back(start);
     std::make_heap(openlist.begin(), openlist.end());
 
@@ -168,6 +174,8 @@ void findPath(std::vector<glm::vec3> &path, glm::vec3 m_start, glm::vec3 m_end, 
         {
             closelist.push_back(goal);
             sendPath(path, closelist);
+            closelist.clear();
+            openlist.clear();
             return;
         }
 
@@ -181,7 +189,35 @@ void findPath(std::vector<glm::vec3> &path, glm::vec3 m_start, glm::vec3 m_end, 
         pathsGenerated = false;
     }
 
+    openlist.clear();
+    closelist.clear();
     return;
+}
+
+
+void constructPatrol(std::vector<glm::vec3>& patrol, glm::vec3 start)
+{
+    patrol.push_back(start);
+    for(float i = 1; i <= 10; ++i)
+    {
+        start.x += 1;
+        patrol.push_back(start);
+    }
+    for(float i = 1; i <= 10; ++i)
+    {
+        start.z += 1;
+        patrol.push_back(start);
+    }
+    for(float i = 1; i <= 10; ++i)
+    {
+        start.x -= 1;
+        patrol.push_back(start);
+    }
+    for(float i = 1; i <= 10; ++i)
+    {
+        start.z -= 1;
+        patrol.push_back(start);
+    }
 }
 
 #endif
