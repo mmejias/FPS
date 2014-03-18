@@ -14,6 +14,7 @@
 #include "Subject.h"
 #include "Observer.h"
 #include "Enemy.h"
+#include "Crosshair.h"
 
 class Player : public Subject
 {
@@ -159,7 +160,6 @@ void Player::moveBackward(float m_dist)
 {
     
     glm::mat4 trans = glm::translate(glm::mat4(1.0f), position);
-    //glm::vec4 move = glm::vec4(0.0f, 0.0f, -m_dist, 1.0f);
     glm::vec4 move = glm::vec4(-camera.getForward().x, 
                                -camera.getForward().y, 
                                -camera.getForward().z,
@@ -201,11 +201,7 @@ void Player::rotateZ()
 
 void Player::fire()
 {
-    Bullet bullet(position, camera.getTarget());
+    Bullet bullet(camera.getEye(), camera.getTarget());
     weapon.projectiles.push_back(bullet);
-    
-    printf("Weapon fired\n");
 }
-
-
 #endif

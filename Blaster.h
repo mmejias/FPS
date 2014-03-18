@@ -20,7 +20,11 @@ class Bullet
         void update();
     private: 
         bool onScreen;
+        float radius;
         unsigned int timer;
+        Sphere bullet;
+        glm::vec3 trajectory;
+        glm::vec3 velocity;
 };
 
 Bullet::Bullet()
@@ -32,9 +36,14 @@ Bullet::Bullet()
 Bullet::Bullet(glm::vec3 m_pos, glm::vec3 m_dir)
 {
     position = m_pos;
-    direction = glm::normalize(m_dir);
     onScreen = true;
     timer = 0;
+    trajectory = m_dir - position;
+    direction = glm::normalize(m_dir);
+    bullet.x = position.x;
+    bullet.y = position.y;
+    bullet.z = position.z;
+    radius = bullet.radius;
 }
 
 bool Bullet::getVisibility()
@@ -44,26 +53,29 @@ bool Bullet::getVisibility()
 
 void Bullet::draw()
 {
-    glBegin(GL_TRIANGLES);
-        glColor3f(1.0f, 0.0f, 0.0f);
-        glVertex3f(position.x,      position.y,      position.z);
-        glVertex3f(position.x+1.0f, position.y,      position.z+1.0f);
-        glVertex3f(position.x+1.0f,  position.y+1.0f, position.z+1.0f);
-    glEnd();
+    /*glBegin(GL_LINES);
+        glColor3f(0.0f, 0.0f, 1.0f);
+        glVertex3f(position.x, position.y, position.z);
+        glVertex3f(position.x + trajectory.x,
+                   position.y + trajectory.y,
+                   position.z + trajectory.z);
+    glEnd();*/
+    bullet.draw();
 }
 
 void Bullet::update()
 {
-    
     ++timer;
-    if(timer > 100000000)
+    if(timer > 1000)
         onScreen = false;
-/*
+     
     glm::mat4 trans = glm::translate(glm::mat4(1.0f), position);
-    glm::vec4 move = glm::vec4(direction.x, direction.y, direction.z, 1.0f);
+    glm::vec4 move  = glm::vec4(trajectory.x,
+                                trajectory.y,
+                                trajectory.z,
+                                1.0f);
     glm::vec4 transformed = trans * move;
     position = glm::vec3(transformed);
-*/
 }
 
 class Blaster
@@ -105,9 +117,5 @@ void Blaster::update()
    {
        projectiles[i].update(); 
    }
-
-//   if(!projectiles.empty())   
-//   projectiles.erase(std::remove_if(projectiles.begin(), projectiles.end(), isVisible));
-   
 }
 #endif
