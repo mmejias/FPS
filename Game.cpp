@@ -243,7 +243,6 @@ void lighting()
 
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-    //glLightfv(GL_LIGHT0, GL_SPECULAR, light_position);
     
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, YELLOW);
