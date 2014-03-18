@@ -135,13 +135,6 @@ void RScreen::Initialize()
 void RScreen::Draw()
 {
     XNextEvent(dpy, &xev);
-
-    //XGetWindowAttributes(dpy, win, &gwa);
-    //glViewport(0, 0, gwa.width, gwa.height);
-    
-    //glXSwapBuffers(dpy, win);
-
-    //Draw, View, Spheres, Buffer 
 }
 
 void RScreen::Close()
