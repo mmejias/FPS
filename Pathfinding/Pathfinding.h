@@ -140,8 +140,8 @@ void generateSuccessors(bool& pathsGenerated,
 
 void sendPath(std::vector<glm::vec3>& path, std::vector<Node>& closelist)
 {
-    for(unsigned int i = 0; i < closelist.size(); ++i)
-        path.push_back(closelist[i].getPosition());
+    for(unsigned int i = 1; i < closelist.size(); ++i)
+        path.push_back(closelist[i].getPosition()-closelist[i-1].getPosition());
 }
 
 void findPath(std::vector<glm::vec3> &path, glm::vec3 m_start, glm::vec3 m_end, Level* level)
