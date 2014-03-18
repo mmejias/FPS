@@ -26,6 +26,7 @@ void handleEvents();
 void handleKeys();
 void handleMouse();
 void lighting();
+void initializeObjects();
 
 RScreen rscreen;
 Level levelone("LevelOne.obj");
@@ -66,10 +67,26 @@ void initialize()
                   GrabModeAsync,
                   CurrentTime);    
 
-
+    XWarpPointer(rscreen.getDisplay(), 
+                 None,
+                 XRootWindow(rscreen.getDisplay(), 0),
+                 0,
+                 0,
+                 0,
+                 0,
+                 rscreen.getWidth()/2,
+                 rscreen.getHeight()/2);
+    
     glViewport(0, 0, rscreen.getWidth(), rscreen.getHeight());
      
     lighting();
+    
+    initializeObjects();
+
+}
+
+void initializeObjects()
+{
 
     player.position.z = -100.0f;
     opposition[0].position.x = -10.0f;  opposition[0].position.z = -10.f;
@@ -84,18 +101,13 @@ void initialize()
     }
 }
 
-void alert()
+void alert(unsigned int index)
 {
-    for(unsigned int i = 0; i < 5; ++i)
-    {
-        if((std::fabs(opposition[i].position.x - player.position.x) <= 20.0  ||
-            std::fabs(opposition[i].position.z - player.position.z) <= 20.0) &&
-            !opposition[i].pathExists())
-            {
-                player.notifyObserver(opposition[i].getId()); 
-                printf("Notifying observer %d\n", (int)opposition[i].getId());
-            }
-    }
+            
+    player.notifyObserver(opposition[index].getId()); 
+    printf("Notifed observer %d\n", (int)opposition[index].getId());
+            
+    
 }
 
 void render()
@@ -109,7 +121,6 @@ void render()
         clock_t startTime = clock();
         
         while(XPending(rscreen.getDisplay()))
-        //while(timeAccumulator >= timeDelta )
         {
             timeAccumulator -= timeDelta;
             
@@ -121,6 +132,16 @@ void render()
             timeAccumulator += double(currentTime - startTime);
         }
 
+        for(unsigned int i = 0; i < 5; ++i)
+        {
+            //if((std::fabs(opposition[i].position.x - player.position.x) <= 7.0  ||
+            //    std::fabs(opposition[i].position.z - player.position.z) <= 7.0) &&
+            //    !opposition[i].pathExists())
+            if(false)
+            {
+                alert(i);
+            }
+        }
         draw();
    }
 }
