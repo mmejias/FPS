@@ -29,7 +29,7 @@ class Enemy : public Observer
         bool hasPath;
         bool onPatrol;
         unsigned int id;
-        unsigned int point;
+        unsigned int point, pos;    //Patrol point and path position, respectively
         Level* map;
         std::vector<glm::vec3> path;
         std::vector<glm::vec3> patrol;
@@ -44,6 +44,7 @@ Enemy::Enemy()
     mEntity.y = position.y;
     mEntity.setRadius(2.5f);    
     point = 0;
+    pos = 0;
     //Set up a patrol region for Enemy
     constructPatrol(patrol, position);
 }
@@ -94,6 +95,23 @@ void Enemy::update()
         position = glm::vec3(transformed);
         ++point;
     }
+    if(hasPath)
+    {
+        glm::vec4 move = glm::vec4(path[pos].x,
+                                   path[pos].y,
+                                   path[pos].z,
+                                   1.0f);
+        glm::vec4 transformed = trans * move;
+        position = glm::vec3(transformed);
+
+        ++pos;
+        if(pos >= path.size())
+        {
+            patrol.clear();
+            constructPatrol(patrol, position);
+            hasPath = false;
+        }
+    }
 
     mEntity.x = position.x;
     mEntity.y = position.y; 
@@ -103,7 +121,7 @@ void Enemy::update()
 void Enemy::notify(glm::vec3 player)
 {
     printf("Notify observer\n");
-    
+    patrol.clear();
     path.clear();
     findPath(path, player, position, map);
     //Set State to Alert
