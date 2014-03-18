@@ -128,6 +128,8 @@ Node& Node::operator= (const Node& that)
     h = that.h;
     position = that.position;
     visited = that.visited;
+
+    return *this;
 }
 
 void Node::setF(float m_f)
